@@ -1,0 +1,7 @@
+# Ignore everything by default
+*
+
+# But allow these
+!.gitignore
+!docs/
+!docs/*.html
