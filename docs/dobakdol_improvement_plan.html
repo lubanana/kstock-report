@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<title>도박돌 전략 저가주 개선 방안</title>
+<style>
+body { font-family: 'Malgun Gothic', sans-serif; margin: 20px; background: #1a1a2e; color: #eee; }
+.header { background: #16213e; padding: 20px; border-radius: 12px; margin-bottom: 20px; }
+.section { background: #0f3460; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
+.problem { background: #3a1a1a; border-left: 4px solid #ff4444; padding: 15px; margin: 10px 0; border-radius: 4px; }
+.solution { background: #1a3a1a; border-left: 4px solid #00ff88; padding: 15px; margin: 10px 0; border-radius: 4px; }
+.impact { background: #1a1a3a; border-left: 4px solid #4488ff; padding: 15px; margin: 10px 0; border-radius: 4px; }
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin: 20px 0; }
+.stat-box { background: #1a1a3e; padding: 15px; border-radius: 8px; text-align: center; }
+.stat-label { font-size: 12px; color: #aaa; }
+.stat-value { font-size: 24px; font-weight: bold; margin-top: 5px; }
+.profit { color: #00ff88; }
+.loss { color: #ff4444; }
+.neutral { color: #ffaa00; }
+ul { line-height: 1.8; }
+li { margin-bottom: 8px; }
+table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+th { background: #1a1a3e; padding: 10px; text-align: left; }
+td { padding: 8px; border-bottom: 1px solid #333; }
+</style></head><body>
+
+<div class="header">
+<h1>🎯 도박돌 전략 저가주 승률 개선 방안</h1>
+<p>현재 승률 35.2% → 목표 50%+ 개선 제안</p>
+<p>분석 기간: 2024-01-01 ~ 2026-05-28 | 저가주(1-5만원) 중심</p>
+</div>
+
+<div class="stats">
+<div class="stat-box"><div class="stat-label">현재 승률</div><div class="stat-value loss">35.2%</div></div>
+<div class="stat-box"><div class="stat-label">과매도 단순 홀딩</div><div class="stat-value profit">70.0%</div></div>
+<div class="stat-box"><div class="stat-label">개선 여지</div><div class="stat-value neutral">+34.8%p</div></div>
+</div>
+
+<div class="section">
+<h2>🔍 핵심 발견: 과매도 구간 홀딩 분석</h2>
+<table>
+<tr><th>홀딩 기간</th><th>승률</th><th>평균 수익률</th><th>중위 수익률</th></tr>
+<tr><td>5일</td><td class="profit">69.8%</td><td>+1.78%</td><td>+2.92%</td></tr>
+<tr><td>10일</td><td class="profit">65.0%</td><td>+6.07%</td><td>+2.92%</td></tr>
+<tr><td class="profit" style="font-weight:bold">20일</td><td class="profit" style="font-weight:bold">70.0%</td><td class="profit">+10.35%</td><td>+4.83%</td></tr>
+</table>
+
+<p>과매도 구간에서 단순 20일 홀딩만 해도 승률 70%, 평균 +10.35% 수익. 현재 MA60 이탈 청산 로직이 너무 빡세어 이 수익을 못 보고 있음.</p>
+</div>
+
+<div class="section">
+<h2>📊 과매도 깊이별 성과 (10일 후)</h2>
+<table>
+<tr><th>깊이</th><th>구간</th><th>건수</th><th>승률</th><th>평균 수익률</th></tr>
+<tr><td>extreme</td><td>≤-25%</td><td>16</td><td class="profit">75.0%</td><td>+3.66%</td></tr>
+<tr><td class="profit" style="font-weight:bold">deep</td><td class="profit" style="font-weight:bold">-25~-20%</td><td>11</td><td class="profit" style="font-weight:bold">81.8%</td><td class="profit">+14.66%</td></tr>
+<tr><td>moderate</td><td>-20~-15%</td><td>13</td><td>38.5%</td><td>+1.78%</td></tr>
+</table>
+
+<p>deep 과매도(-25~-20%)가 가장 높은 승률(81.8%)과 수익률(+14.66%) 기록. extreme보다 오히려 성과 좋음.</p>
+</div>
+
+<div class="section">
+<h2>🔍 문제 분석</h2>
+
+<div class="problem">
+<h3>문제 1: MA60 이탈이 너무 빡섬</h3>
+<ul>
+<li>현재: 종가 < MA60 시 전량 청산</li>
+<li>결과: 홀딩 3.7일로 짧아 큰 수익 못 봄</li>
+<li>51.8%가 소손실 (-10~0%) 구간에서 청산</li>
+<li>실제로 20일 홀딩 시 70% 승률 달성 가능</li>
+</ul>
+</div>
+
+<div class="problem">
+<h3>문제 2: 손절가가 진입가 너무 가까움</h3>
+<ul>
+<li>현재: 매수 캔들 저가 = 손절가</li>
+<li>문제: 하루 변동성에 바로 터치</li>
+<li>369건 STOP_LOSS (25.9%)</li>
+</ul>
+</div>
+
+<div class="problem">
+<h3>문제 3: 박스 돌파 조건이 너무 엄격</h3>
+<ul>
+<li>엔벨+스토 동시 발생 후 5일 내 박스 돌파 필요</li>
+<li>과매도 후 바로 반등하지 않으면 신호 무효</li>
+<li>실제로는 과매도 후 수일 횡보 후 반등하는 경우 많음</li>
+</ul>
+</div>
+</div>
+
+<div class="section">
+<h2>💡 개선 방안</h2>
+
+<div class="solution">
+<h3>방안 1: 홀딩 기간 연장 (MA60 → 추세 추적)</h3>
+<ul>
+<li>현재: MA60 이탈 시 청산 (3.7일 평균)</li>
+<li>변경: 20일 고정 홀딩 또는 MA20 이탈 시 청산</li>
+<li>근거: 과매도 20일 홀딩 시 승률 70%</li>
+<li>예상: 승률 35% → 60%+</li>
+</ul>
+</div>
+
+<div class="solution">
+<h3>방안 2: 과매도 깊이 필터</h3>
+<ul>
+<li>현재: -18% envelope (moderate~deep 모두 포함)</li>
+<li>변경: -20% 이하만 진입 (deep+extreme)</li>
+<li>근거: deep 과매도 승률 81.8%, moderate는 38.5%</li>
+<li>예상: 거래 수 감소 but 승률 크게 상승</li>
+</ul>
+</div>
+
+<div class="solution">
+<h3>방안 3: 손절가 완화 (ATR 기반)</h3>
+<ul>
+<li>현재: 매수 캔들 저가 (너무 빡셈)</li>
+<li>변경: 매수가 -5% 또는 ATR(14)×2</li>
+<li>효과: 노이즈 방지, 추세 유지</li>
+<li>주의: 과도한 완화 시 큰 손실 위험</li>
+</ul>
+</div>
+
+<div class="solution">
+<h3>방안 4: 분할 익절 단계 조정</h3>
+<ul>
+<li>현재: 10% → 50% 매도</li>
+<li>변경: 15% → 30% 매도, 25% → 30% 매도, 나머지 40% 추세 홀딩</li>
+<li>근거: 20일 홀딩 시 평균 +10.35% 수익</li>
+<li>10%에서 절반 매도하면 나머지 50%의 수익 기회 상실</li>
+</ul>
+</div>
+</div>
+
+<div class="section">
+<h2>📈 기대 효과</h2>
+
+<div class="impact">
+<h3>개선 시뮬레이션</h3>
+<ul>
+<li>20일 홀딩: 승률 35% → 70% (실제 데이터 기반)</li>
+<li>deep 필터: 승률 70% → 81% (extreme 제외)</li>
+<li>손절 완화: STOP_LOSS 25% → 15% 감소</li>
+<li>분할 익절 15%: 수익 거래 비율 증가</li>
+<li><strong>종합 예상: 승률 35% → 65~75%</strong></li>
+</ul>
+</div>
+</div>
+
+<div class="section">
+<h2>⚠️ 리스크</h2>
+<ul>
+<li>20일 홀딩 시 장기 하락 추세에서 손실 확대</li>
+<li>deep 필터 시 거래 수 감소 (수익 기회 감소)</li>
+<li>저가주는 여전히 변동성이 큼 (리스크 관리 필수)</li>
+<li>실제 백테스트 필요 (이 분석은 단순 과매도 홀딩 기준)</li>
+</ul>
+</div>
+
+<div class="section">
+<h2>🎯 다음 단계</h2>
+<ol>
+<li>방안 1+2 동시 적용 백테스트 (20일 홀딩 + deep 필터)</li>
+<li>실제 도박돌 전략 로직에 반영 후 재백테스트</li>
+<li>거래대금 5천만원 이상 필터 추가</li>
+<li>실제 시장 테스트 (소규모)</li>
+</ol>
+</div>
+
+</body></html>
