@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<title>필터 연구 리포트</title>
+<style>
+body{font-family:'Malgun Gothic',sans-serif;margin:20px;background:#1a1a2e;color:#eee;}
+.header{background:#16213e;padding:20px;border-radius:12px;margin-bottom:20px;}
+.section{background:#0f3460;padding:20px;border-radius:8px;margin-bottom:20px;}
+table{width:100%;border-collapse:collapse;margin-top:10px;font-size:14px;}
+th{background:#1a1a3e;padding:12px;text-align:left;}
+td{padding:10px;border-bottom:1px solid #333;}
+tr:hover{background:#1a1a4e;}
+.profit{color:#00ff88;} .loss{color:#ff4444;}
+</style></head><body>
+<div class="header">
+<h1>🔬 필터 연구 리포트 (샘플 500개)</h1>
+<p>기준: RSI <=30 과매도 + 저가주(<10,000) + RSI 상승 반전 + 거래대금 50M+</p>
+</div>
+<div class="section">
+<h2>📊 필터별 성능 비교</h2>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>필터</th>
+      <th>거래수</th>
+      <th>승률</th>
+      <th>평균수익률</th>
+      <th>PF</th>
+      <th>평균승</th>
+      <th>평균패</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>baseline</td>
+      <td>1422</td>
+      <td>46.8%</td>
+      <td>+1.52%</td>
+      <td>1.22</td>
+      <td>+18.00%</td>
+      <td>-12.96%</td>
+    </tr>
+    <tr>
+      <td>ema_uptrend</td>
+      <td>52</td>
+      <td>38.5%</td>
+      <td>-4.48%</td>
+      <td>0.47</td>
+      <td>+10.33%</td>
+      <td>-13.73%</td>
+    </tr>
+    <tr>
+      <td>ema_downtrend</td>
+      <td>1383</td>
+      <td>47.0%</td>
+      <td>+1.70%</td>
+      <td>1.25</td>
+      <td>+18.13%</td>
+      <td>-12.88%</td>
+    </tr>
+    <tr>
+      <td>price_below_ema20</td>
+      <td>1354</td>
+      <td>47.8%</td>
+      <td>+2.07%</td>
+      <td>1.32</td>
+      <td>+17.99%</td>
+      <td>-12.50%</td>
+    </tr>
+    <tr>
+      <td>price_above_ema20</td>
+      <td>113</td>
+      <td>31.9%</td>
+      <td>-7.65%</td>
+      <td>0.39</td>
+      <td>+15.37%</td>
+      <td>-18.41%</td>
+    </tr>
+    <tr>
+      <td>macd_positive</td>
+      <td>31</td>
+      <td>38.7%</td>
+      <td>-8.18%</td>
+      <td>0.20</td>
+      <td>+5.18%</td>
+      <td>-16.62%</td>
+    </tr>
+    <tr>
+      <td>macd_negative</td>
+      <td>1399</td>
+      <td>46.9%</td>
+      <td>+1.64%</td>
+      <td>1.24</td>
+      <td>+18.06%</td>
+      <td>-12.87%</td>
+    </tr>
+    <tr>
+      <td>volume_spike</td>
+      <td>535</td>
+      <td>39.6%</td>
+      <td>+0.82%</td>
+      <td>1.09</td>
+      <td>+24.05%</td>
+      <td>-14.43%</td>
+    </tr>
+    <tr>
+      <td>rsi_deep</td>
+      <td>837</td>
+      <td>46.4%</td>
+      <td>+2.85%</td>
+      <td>1.39</td>
+      <td>+21.94%</td>
+      <td>-13.65%</td>
+    </tr>
+    <tr>
+      <td>recent_5d_up</td>
+      <td>501</td>
+      <td>38.5%</td>
+      <td>+1.21%</td>
+      <td>1.14</td>
+      <td>+26.22%</td>
+      <td>-14.45%</td>
+    </tr>
+    <tr>
+      <td>recent_5d_down</td>
+      <td>1118</td>
+      <td>48.9%</td>
+      <td>+1.09%</td>
+      <td>1.18</td>
+      <td>+14.51%</td>
+      <td>-11.76%</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</body></html>
