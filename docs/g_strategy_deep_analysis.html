@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>G 전략 상세 분석 - 승률 강화 필터링</title>
+<style>
+body { font-family: 'Segoe UI', sans-serif; margin: 40px; background: #1a1a2e; color: #eee; }
+.container { max-width: 1400px; margin: 0 auto; }
+h1 { color: #ffd700; border-bottom: 3px solid #ffd700; padding-bottom: 10px; }
+h2 { color: #00d4ff; margin-top: 40px; }
+h3 { color: #ffd700; margin-top: 30px; }
+.summary { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin: 30px 0; }
+.card { background: #16213e; padding: 25px; border-radius: 12px; text-align: center; border: 1px solid #0f3460; }
+.card .value { font-size: 2.5em; font-weight: bold; color: #ffd700; }
+.card .label { font-size: 0.9em; color: #aaa; margin-top: 8px; }
+.card.gold { border: 2px solid #ffd700; background: #1a1a2e; }
+.card.positive .value { color: #2ed573; }
+.card.negative .value { color: #ff4757; }
+table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 0.9em; }
+th { background: #0f3460; padding: 12px; text-align: center; color: #ffd700; }
+td { padding: 10px; border-bottom: 1px solid #333; text-align: center; }
+tr:hover { background: #1e3a5f; }
+tr.gold { background: rgba(255,215,0,0.1); }
+tr.highlight { background: rgba(46,213,115,0.1); }
+.win { color: #2ed573; font-weight: bold; }
+.loss { color: #ff4757; font-weight: bold; }
+.section { background: #16213e; padding: 30px; border-radius: 12px; margin: 20px 0; }
+.insight { background: #0f3460; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #ffd700; }
+.insight h3 { color: #ffd700; margin-top: 0; }
+.insight p { margin: 8px 0; }
+</style>
+</head>
+<body>
+<div class="container">
+<h1>🏆 G 전략 (RSI≤30 + 저가주 + EMA 정배열) 상세 분석</h1>
+<p>기간: 2025-06-01 ~ 2026-05-29 | 대상: 전체 한국 주식 2,987종목</p>
+
+<div class="section">
+<h2>📊 필터 변형 결과 (PF 기준 랭킹)</h2>
+<table>
+<tr>
+<th>순위</th><th>전략</th><th>총 거래</th><th>승률</th><th>PF</th><th>평균 수익률</th><th>총 수익률</th><th>평가</th>
+</tr>
+<tr class="gold"><td><strong>1</strong></td><td><strong>🥇 G_RSI20_Price3000</strong></td><td>353</td><td>44.2%</td><td class="positive"><strong>27.54</strong></td><td class="positive">+57.26%</td><td class="positive">+20,212%</td><td>✅ 강추</td></tr>
+<tr><td><strong>2</strong></td><td><strong>🥈 G_RSI20_PriceEMA1.0</strong></td><td>78</td><td>39.7%</td><td class="positive"><strong>19.83</strong></td><td class="positive">+86.71%</td><td class="positive">+6,763%</td><td>✅ 강추</td></tr>
+<tr><td><strong>3</strong></td><td><strong>🥉 G_RSI20</strong></td><td>557</td><td>42.2%</td><td class="positive"><strong>16.17</strong></td><td class="positive">+37.52%</td><td class="positive">+20,900%</td><td>✅ 강추</td></tr>
+<tr><td><strong>4</strong></td><td><strong>G_Price3000_EMA1.0</strong></td><td>161</td><td>38.5%</td><td class="positive"><strong>12.63</strong></td><td class="positive">+35.42%</td><td class="positive">+5,702%</td><td>✅ 강추</td></tr>
+<tr><td><strong>5</strong></td><td><strong>G_RSI25_Price5000</strong></td><td>966</td><td>40.2%</td><td class="positive"><strong>9.33</strong></td><td class="positive">+20.82%</td><td class="positive">+20,111%</td><td>✅ 강추</td></tr>
+<tr><td><strong>6</strong></td><td><strong>G_RSI25</strong></td><td>1,255</td><td>39.0%</td><td class="positive"><strong>7.34</strong></td><td class="positive">+16.19%</td><td class="positive">+20,319%</td><td>✅ 강추</td></tr>
+<tr><td><strong>7</strong></td><td><strong>G_Price3000</strong></td><td>1,509</td><td>39.0%</td><td class="positive"><strong>6.46</strong></td><td class="positive">+13.30%</td><td class="positive">+20,075%</td><td>✅ 강추</td></tr>
+<tr><td><strong>8</strong></td><td><strong>G_PriceEMA1.0</strong></td><td>324</td><td>31.8%</td><td class="positive"><strong>5.94</strong></td><td class="positive">+19.11%</td><td class="positive">+6,191%</td><td>✅ 강추</td></tr>
+<tr><td><strong>9</strong></td><td><strong>G_Price5000</strong></td><td>2,102</td><td>38.0%</td><td class="positive"><strong>4.78</strong></td><td class="positive">+9.48%</td><td class="positive">+19,921%</td><td>✅ 강추</td></tr>
+<tr><td><strong>10</strong></td><td><strong>G_Weekday</strong></td><td>2,508</td><td>37.1%</td><td class="positive"><strong>3.81</strong></td><td class="positive">+7.17%</td><td class="positive">+17,985%</td><td>✅ 강추</td></tr>
+<tr><td><strong>11</strong></td><td><strong>G_Base</strong></td><td>2,799</td><td>37.1%</td><td class="positive"><strong>3.79</strong></td><td class="positive">+7.14%</td><td class="positive">+19,971%</td><td>✅ 강추</td></tr>
+<tr><td><strong>12</strong></td><td><strong>G_Price5000_Vol1.5x</strong></td><td>361</td><td>44.0%</td><td class="negative"><strong>0.55</strong></td><td class="negative">-1.16%</td><td class="negative">-419%</td><td>❌ 비추천</td></tr>
+<tr><td><strong>13</strong></td><td><strong>G_Vol1.5x</strong></td><td>461</td><td>41.2%</td><td class="negative"><strong>0.53</strong></td><td class="negative">-1.20%</td><td class="negative">-553%</td><td>❌ 비추천</td></tr>
+<tr><td><strong>14</strong></td><td><strong>G_Vol2x</strong></td><td>298</td><td>40.6%</td><td class="negative"><strong>0.49</strong></td><td class="negative">-1.38%</td><td class="negative">-411%</td><td>❌ 비추천</td></tr>
+<tr><td><strong>15</strong></td><td><strong>G_RSI20_Vol1.5x</strong></td><td>91</td><td>42.9%</td><td class="negative"><strong>0.25</strong></td><td class="negative">-2.65%</td><td class="negative">-241%</td><td>❌ 비추천</td></tr>
+<tr><td><strong>16</strong></td><td><strong>G_RSI20_Price5000_Vol1.5x</strong></td><td>76</td><td>43.4%</td><td class="negative"><strong>0.25</strong></td><td class="negative">-2.86%</td><td class="negative">-217%</td><td>❌ 비추천</td></tr>
+</table>
+</div>
+
+<div class="section">
+<h2>📈 차원별 상세 분석</h2>
+
+<h3>1. 주가 구간별</h3>
+<table>
+<tr><th>구간</th><th>거래</th><th>승률</th><th>PF</th><th>평균 수익률</th><th>총 수익률</th></tr>
+<tr class="highlight"><td><strong>&lt;3,000</strong></td><td>1,492</td><td>39.2%</td><td class="positive">6.51</td><td class="positive">+13.46%</td><td class="positive">+20,080%</td></tr>
+<tr><td><strong>3,000-5,000</strong></td><td>599</td><td>35.4%</td><td class="negative">0.90</td><td class="negative">-0.26%</td><td class="negative">-156%</td></tr>
+<tr><td><strong>5,000-7,000</strong></td><td>344</td><td>35.8%</td><td class="positive">1.38</td><td class="positive">+0.99%</td><td class="positive">+340%</td></tr>
+<tr><td><strong>7,000-10,000</strong></td><td>354</td><td>33.6%</td><td class="negative">0.70</td><td class="negative">-0.83%</td><td class="negative">-294%</td></tr>
+</table>
+
+<h3>2. RSI 수준별</h3>
+<table>
+<tr><th>RSI 구간</th><th>거래</th><th>승률</th><th>PF</th><th>평균 수익률</th><th>총 수익률</th></tr>
+<tr class="gold"><td><strong>≤15</strong></td><td>159</td><td>47.2%</td><td class="positive"><strong>34.51</strong></td><td class="positive"><strong>+100.03%</strong></td><td class="positive">+15,905%</td></tr>
+<tr class="highlight"><td><strong>16-20</strong></td><td>225</td><td>36.4%</td><td class="positive">2.76</td><td class="positive">+4.09%</td><td class="positive">+920%</td></tr>
+<tr><td><strong>21-25</strong></td><td>605</td><td>35.0%</td><td class="positive">1.84</td><td class="positive">+2.30%</td><td class="positive">+1,392%</td></tr>
+<tr><td><strong>26-30</strong></td><td>1,800</td><td>37.2%</td><td class="positive">1.39</td><td class="positive">+0.97%</td><td class="positive">+1,746%</td></tr>
+</table>
+
+<h3>3. Price/EMA 비율별</h3>
+<table>
+<tr><th>비율 구간</th><th>거래</th><th>승률</th><th>PF</th><th>평균 수익률</th><th>총 수익률</th></tr>
+<tr><td><strong>&lt;0.99</strong></td><td>1,875</td><td>36.2%</td><td class="positive">2.21</td><td class="positive">+2.79%</td><td class="positive">+5,231%</td></tr>
+<tr class="highlight"><td><strong>0.99-1.00</strong></td><td>639</td><td>42.6%</td><td class="positive">5.94</td><td class="positive">+13.37%</td><td class="positive">+8,543%</td></tr>
+<tr><td><strong>1.00-1.01</strong></td><td>126</td><td>38.1%</td><td class="positive">4.96</td><td class="positive">+16.23%</td><td class="positive">+2,045%</td></tr>
+<tr class="highlight"><td><strong>1.01-1.02</strong></td><td>61</td><td>31.1%</td><td class="positive">9.12</td><td class="positive">+28.99%</td><td class="positive">+1,768%</td></tr>
+<tr class="highlight"><td><strong>≥1.02</strong></td><td>88</td><td>25.0%</td><td class="positive">7.17</td><td class="positive">+27.15%</td><td class="positive">+2,389%</td></tr>
+</table>
+
+<h3>4. 거래대금 비율별</h3>
+<table>
+<tr><th>거래대금 비율</th><th>거래</th><th>승률</th><th>PF</th><th>평균 수익률</th><th>총 수익률</th></tr>
+<tr class="highlight"><td><strong>&lt;0.5x</strong></td><td>1,402</td><td>36.2%</td><td class="positive">6.55</td><td class="positive">+14.83%</td><td class="positive">+20,791%</td></tr>
+<tr><td><strong>0.5-1.0x</strong></td><td>833</td><td>37.6%</td><td class="negative">0.81</td><td class="negative">-0.45%</td><td class="negative">-375%</td></tr>
+<tr><td><strong>1.0-1.5x</strong></td><td>291</td><td>37.1%</td><td class="negative">0.79</td><td class="negative">-0.49%</td><td class="negative">-143%</td></tr>
+<tr><td><strong>1.5-2.0x</strong></td><td>100</td><td>45.0%</td><td class="positive">1.01</td><td class="positive">+0.03%</td><td class="positive">+3%</td></tr>
+<tr><td><strong>2.0-3.0x</strong></td><td>91</td><td>38.5%</td><td class="negative">0.56</td><td class="negative">-1.30%</td><td class="negative">-118%</td></tr>
+<tr><td><strong>≥3.0x</strong></td><td>72</td><td>43.1%</td><td class="negative">0.41</td><td class="negative">-2.64%</td><td class="negative">-190%</td></tr>
+</table>
+
+<h3>5. 요일별</h3>
+<table>
+<tr><th>요일</th><th>거래</th><th>승률</th><th>PF</th><th>평균 수익률</th><th>총 수익률</th></tr>
+<tr><td><strong>월</strong></td><td>524</td><td>33.2%</td><td class="positive">3.89</td><td class="positive">+9.07%</td><td class="positive">+4,753%</td></tr>
+<tr><td><strong>화</strong></td><td>516</td><td>39.7%</td><td class="positive">3.32</td><td class="positive">+5.72%</td><td class="positive">+2,951%</td></tr>
+<tr><td><strong>수</strong></td><td>653</td><td>37.1%</td><td class="positive">2.99</td><td class="positive">+4.70%</td><td class="positive">+3,069%</td></tr>
+<tr class="highlight"><td><strong>목</strong></td><td>581</td><td>37.9%</td><td class="positive">4.44</td><td class="positive">+8.84%</td><td class="positive">+5,136%</td></tr>
+<tr class="highlight"><td><strong>금</strong></td><td>515</td><td>38.4%</td><td class="positive">4.35</td><td class="positive">+7.88%</td><td class="positive">+4,058%</td></tr>
+</table>
+</div>
+
+<div class="section">
+<h2>💡 핵심 인사이트 & 승률 강화 방안</h2>
+
+<div class="insight">
+<h3>🥇 1위: RSI ≤15 극과매도 (PF 34.51)</h3>
+<p>RSI가 15 이하로 극도의 과매도에 빠진 종목은 평균 수익률 <strong>+100%</strong>, PF <strong>34.51</strong>를 기록.</p>
+<p>거래 159건, 승률 47.2% — 이 구간은 "공포의 극치"에서 매수하는 전략.</p>
+</div>
+
+<div class="insight">
+<h3>🥈 2위: 주가 &lt;3,000원 (PF 6.51)</h3>
+<p>3,000원 미만 저가주에서만 거래하면 PF 6.51, 평균 +13.46%.</p>
+<p>3,000-5,000원 구간은 PF 0.90으로 손실 — 저가주는 <strong>3,000원 미만</strong>으로 한정해야 효과적.</p>
+</div>
+
+<div class="insight">
+<h3>🥉 3위: 거래량 적을 때 (&lt;0.5x, PF 6.55)</h3>
+<p>거래대금이 20일 평균의 50% 미만일 때 매수하면 PF 6.55.</p>
+<p>거래량 급증(≥3.0x) 구간은 PF 0.41로 손실 — "조용한 과매도"가 핵심.</p>
+</div>
+
+<div class="insight">
+<h3>🏆 최적 조합: RSI ≤20 + 주가 &lt;3,000 (PF 27.54)</h3>
+<p>두 조건을 결합하면 PF가 <strong>27.54</strong>로 폭발. 거래 353건, 승률 44.2%, 평균 +57.26%.</p>
+<p>이 조합은 매우 드물지만(연간 약 350건), 수익률이 압도적.</p>
+</div>
+
+<div class="insight">
+<h3>📊 Price/EMA 비율 인사이트</h3>
+<p>0.99-1.00 구간(PF 5.94)과 1.01-1.02 구간(PF 9.12) 모두 우수. EMA에 근접하거나 약간 위에 있는 종목이 유리.</p>
+<p>하지만 ≥1.02 구간은 거래수가 적어(88건) 신뢰도 낮음.</p>
+</div>
+</div>
+
+<div class="section">
+<h2>📋 추천 필터 조합</h2>
+<table>
+<tr><th>순위</th><th>조합</th><th>PF</th><th>거래</th><th>승률</th><th>평균 수익</th><th>실전 적용도</th></tr>
+<tr class="gold">
+<td><strong>1</strong></td>
+<td><strong>RSI ≤20 + 주가 &lt;3,000</strong></td>
+<td><strong>27.54</strong></td>
+<td>353</td>
+<td>44.2%</td>
+<td>+57.26%</td>
+<td>⚠️ 거래 적음</td>
+</tr>
+<tr class="highlight">
+<td><strong>2</strong></td>
+<td><strong>RSI ≤20 + Price/EMA ≥1.0</strong></td>
+<td><strong>19.83</strong></td>
+<td>78</td>
+<td>39.7%</td>
+<td>+86.71%</td>
+<td>⚠️ 거래 매우 적음</td>
+</tr>
+<tr>
+<td><strong>3</strong></td>
+<td><strong>RSI ≤20 단일</strong></td>
+<td><strong>16.17</strong></td>
+<td>557</td>
+<td>42.2%</td>
+<td>+37.52%</td>
+<td>✅ 적정 거래</td>
+</tr>
+<tr>
+<td><strong>4</strong></td>
+<td><strong>주가 &lt;3,000 + Price/EMA ≥1.0</strong></td>
+<td><strong>12.63</strong></td>
+<td>161</td>
+<td>38.5%</td>
+<td>+35.42%</td>
+<td>⚠️ 거래 적음</td>
+</tr>
+<tr>
+<td><strong>5</strong></td>
+<td><strong>기본 G (RSI≤30 + 저가주 + EMA 정배열)</strong></td>
+<td><strong>3.79</strong></td>
+<td>2,799</td>
+<td>37.1%</td>
+<td>+7.14%</td>
+<td>✅ 충분한 거래</td>
+</tr>
+</table>
+</div>
+
+<p style="text-align:center; color:#888; margin-top:40px;">
+Generated by OpenClaw | G Strategy Deep Analysis
+</p>
+</div>
+</body>
+</html>
