@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>G_RSI20_Price3000 세부 분석 리포트</title>
+<style>
+body { font-family: 'Segoe UI', sans-serif; margin: 40px; background: #1a1a2e; color: #eee; }
+.container { max-width: 1400px; margin: 0 auto; }
+h1 { color: #ffd700; border-bottom: 3px solid #ffd700; padding-bottom: 10px; }
+h2 { color: #00d4ff; margin-top: 40px; }
+h3 { color: #ffd700; margin-top: 30px; }
+.card-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin: 30px 0; }
+.card { background: #16213e; padding: 25px; border-radius: 12px; text-align: center; border: 1px solid #0f3460; }
+.card .value { font-size: 2.5em; font-weight: bold; color: #ffd700; }
+.card .label { font-size: 0.9em; color: #aaa; margin-top: 8px; }
+.card.positive .value { color: #2ed573; }
+.card.negative .value { color: #ff4757; }
+.card.gold { border: 2px solid #ffd700; }
+table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 0.9em; }
+th { background: #0f3460; padding: 12px; text-align: center; color: #ffd700; }
+td { padding: 10px; border-bottom: 1px solid #333; text-align: center; }
+tr:hover { background: #1e3a5f; }
+tr.gold { background: rgba(255,215,0,0.1); }
+tr.positive { background: rgba(46,213,115,0.1); }
+tr.negative { background: rgba(255,71,87,0.1); }
+.section { background: #16213e; padding: 30px; border-radius: 12px; margin: 20px 0; }
+.insight { background: #0f3460; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #ffd700; }
+.insight h3 { color: #ffd700; margin-top: 0; }
+.insight p { margin: 8px 0; }
+.bar { display: inline-block; background: #2ed573; height: 20px; border-radius: 3px; margin-right: 5px; }
+.bar-loss { background: #ff4757; }
+</style>
+</head>
+<body>
+<div class="container">
+<h1>🏆 G_RSI20_Price3000 세부 분석</h1>
+<p>기간: 2025-06-01 ~ 2026-05-29 | 조건: RSI ≤20 + 주가 < 3,000 + EMA 정배열 | 총 거래: 351건</p>
+
+<div class="card-grid">
+<div class="card gold"><div class="value">27.54</div><div class="label">PF</div></div>
+<div class="card positive"><div class="value">44.4%</div><div class="label">승률 (156승/195패)</div></div>
+<div class="card positive"><div class="value">+57.58%</div><div class="label">평균 수익률</div></div>
+<div class="card positive"><div class="value">+20,212%</div><div class="label">총 수익률</div></div>
+</div>
+
+<div class="section">
+<h2>📊 핵심 통계</h2>
+<table>
+<tr><th>항목</th><th>값</th></tr>
+<tr><td>최대 수익</td><td class="positive">+1,893.48%</td></tr>
+<tr><td>최대 손실</td><td class="negative">-100.00%</td></tr>
+<tr><td>중간값 수익률</td><td>+0.00%</td></tr>
+<tr><td>평균 홀딩 기간</td><td>8.9일</td></tr>
+<tr><td>최소/최대 홀딩</td><td>1일 / 10일</td></tr>
+<tr><td>10일 만기 청산 비율</td><td>84.6% (297건)</td></tr>
+</table>
+</div>
+
+<div class="section">
+<h2>📈 월별 성과</h2>
+<table>
+<tr><th>월</th><th>거래</th><th>승률</th><th>PF</th><th>평균 수익률</th></tr>
+<tr class="positive gold"><td>2026-04</td><td>41</td><td>63.4%</td><td>569.75</td><td class="positive">+251.33%</td></tr>
+<tr class="positive gold"><td>2026-05</td><td>56</td><td>55.4%</td><td>95.27</td><td class="positive">+179.54%</td></tr>
+<tr class="positive"><td>2025-08</td><td>27</td><td>40.7%</td><td>2.82</td><td class="positive">+2.96%</td></tr>
+<tr class="positive"><td>2025-11</td><td>19</td><td>57.9%</td><td>1.94</td><td class="positive">+0.99%</td></tr>
+<tr class="positive"><td>2025-12</td><td>27</td><td>59.3%</td><td>1.40</td><td class="positive">+0.83%</td></tr>
+<tr><td>2025-10</td><td>38</td><td>23.7%</td><td>0.96</td><td>-0.13%</td></tr>
+<tr class="negative"><td>2025-09</td><td>49</td><td>49.0%</td><td>0.62</td><td class="negative">-0.85%</td></tr>
+<tr class="negative"><td>2026-01</td><td>32</td><td>37.5%</td><td>0.49</td><td class="negative">-0.94%</td></tr>
+<tr class="negative"><td>2025-07</td><td>35</td><td>22.9%</td><td>0.16</td><td class="negative">-2.36%</td></tr>
+<tr class="negative"><td>2026-02</td><td>6</td><td>16.7%</td><td>0.52</td><td class="negative">-1.71%</td></tr>
+<tr class="negative"><td>2026-03</td><td>21</td><td>33.3%</td><td>0.11</td><td class="negative">-4.71%</td></tr>
+</table>
+</div>
+
+<div class="section">
+<h2>🎯 RSI 진입 레벨별 성과</h2>
+<table>
+<tr><th>RSI 구간</th><th>거래</th><th>승률</th><th>PF</th><th>평균 수익률</th></tr>
+<tr class="gold"><td>≤10 (극과매도)</td><td>83</td><td>54.2%</td><td><strong>97.23</strong></td><td class="positive"><strong>+187.76%</strong></td></tr>
+<tr class="positive"><td>11~15</td><td>58</td><td>46.6%</td><td><strong>39.45</strong></td><td class="positive">+64.72%</td></tr>
+<tr><td>16~20</td><td>210</td><td>40.0%</td><td>2.74</td><td class="positive">+4.16%</td></tr>
+</table>
+<p style="color:#888;font-size:0.9em">RSI ≤10일 때 PF 97, ≤15일 때 PF 39 — RSI가 낮을수록 수익률이 기하급수적으로 상승.</p>
+</div>
+
+<div class="section">
+<h2>💰 주가 진입 레벨별 성과</h2>
+<table>
+<tr><th>주가 구간</th><th>거래</th><th>승률</th><th>PF</th><th>평균 수익률</th></tr>
+<tr class="gold"><td>&lt;1,000원</td><td>112</td><td>42.9%</td><td><strong>61.53</strong></td><td class="positive"><strong>+142.25%</strong></td></tr>
+<tr class="positive"><td>1,000~1,500원</td><td>46</td><td>41.3%</td><td><strong>23.60</strong></td><td class="positive">+51.35%</td></tr>
+<tr class="positive"><td>1,500~2,000원</td><td>54</td><td>42.6%</td><td><strong>15.92</strong></td><td class="positive">+31.42%</td></tr>
+<tr><td>2,000~2,500원</td><td>104</td><td>52.9%</td><td>2.25</td><td class="positive">+2.50%</td></tr>
+<tr class="negative"><td>2,500~3,000원</td><td>35</td><td>31.4%</td><td>0.46</td><td class="negative">-1.13%</td></tr>
+</table>
+<p style="color:#888;font-size:0.9em">1,000원 미만 종목 PF 61, 2,500원 이상은 PF 0.46으로 손실 — 싼 종목일수록 압도적으로 유리.</p>
+</div>
+
+<div class="section">
+<h2>📉 청산 사유 분석</h2>
+<table>
+<tr><th>청산 사유</th><th>거래</th><th>비율</th><th>승률</th><th>평균 수익률</th></tr>
+<tr class="negative"><td>Stop Loss (-7%)</td><td>66</td><td>18.8%</td><td>0.0%</td><td class="negative">-7.00%</td></tr>
+<tr class="positive"><td>Max Hold (10일)</td><td>264</td><td>75.2%</td><td>53.8%</td><td class="positive">+55.39%</td></tr>
+<tr class="positive"><td>End of Data</td><td>21</td><td>6.0%</td><td>66.7%</td><td class="positive">+288.09%</td></tr>
+</table>
+<p style="color:#888;font-size:0.9em">10일 홀딩이 핵심 — 손절당한 종목은 모두 패배, 10일 버틴 종목의 54%가 수익. 데이터 종료일 청산은 고수익 편중.</p>
+</div>
+
+<div class="section">
+<h2>📊 수익률 분포</h2>
+<table>
+<tr><th>구간</th><th>건수</th><th>비율</th><th>비주</th></tr>
+<tr class="negative"><td>&lt;-20%</td><td>1</td><td>0.3%</td><td><span class="bar bar-loss" style="width:3px"></span></td></tr>
+<tr class="negative"><td>-10% ~ -7%</td><td>16</td><td>4.6%</td><td><span class="bar bar-loss" style="width:23px"></span></td></tr>
+<tr class="negative"><td>-7% ~ -5%</td><td>55</td><td>15.7%</td><td><span class="bar bar-loss" style="width:79px"></span></td></tr>
+<tr class="negative"><td>-5% ~ -3%</td><td>18</td><td>5.1%</td><td><span class="bar bar-loss" style="width:26px"></span></td></tr>
+<tr><td>-3% ~ 0%</td><td>81</td><td>23.1%</td><td><span class="bar bar-loss" style="width:116px"></span></td></tr>
+<tr class="positive"><td>0% ~ 3%</td><td>100</td><td>28.5%</td><td><span class="bar" style="width:143px"></span></td></tr>
+<tr class="positive"><td>3% ~ 5%</td><td>13</td><td>3.7%</td><td><span class="bar" style="width:19px"></span></td></tr>
+<tr class="positive"><td>5% ~ 10%</td><td>11</td><td>3.1%</td><td><span class="bar" style="width:16px"></span></td></tr>
+<tr class="positive"><td>10% ~ 20%</td><td>3</td><td>0.9%</td><td><span class="bar" style="width:5px"></span></td></tr>
+<tr class="positive"><td>20% ~ 50%</td><td>5</td><td>1.4%</td><td><span class="bar" style="width:7px"></span></td></tr>
+<tr class="positive gold"><td>&gt;50%</td><td>48</td><td>13.7%</td><td><span class="bar" style="width:69px"></span></td></tr>
+</table>
+<p style="color:#888;font-size:0.9em">13.7%의 거래가 +50% 이상 수익. 중간값 +0.00% — 평균 +57%는 소수의 거대 수익 거래가 견인.</p>
+</div>
+
+<div class="section">
+<h2>🏅 TOP 10 수익 거래</h2>
+<table>
+<tr><th>순위</th><th>종목</th><th>진입일</th><th>진입가</th><th>RSI</th><th>청산일</th><th>청산가</th><th>수익률</th><th>사유</th></tr>
+<tr class="gold"><td>1</td><td>276730</td><td>2026-04-27</td><td>767</td><td>0.0</td><td>2026-05-13</td><td>15,290</td><td class="positive">+1,893%</td><td>max_hold</td></tr>
+<tr class="positive"><td>2</td><td>060900</td><td>2026-04-22</td><td>345</td><td>0.0</td><td>2026-05-08</td><td>5,850</td><td class="positive">+1,596%</td><td>max_hold</td></tr>
+<tr class="positive"><td>3</td><td>016600</td><td>2026-05-14</td><td>293</td><td>12.5</td><td>2026-05-29</td><td>3,870</td><td class="positive">+1,221%</td><td>end_of_data</td></tr>
+<tr class="positive"><td>4</td><td>061250</td><td>2026-04-21</td><td>943</td><td>0.0</td><td>2026-05-07</td><td>8,060</td><td class="positive">+755%</td><td>max_hold</td></tr>
+<tr class="positive"><td>5</td><td>004415</td><td>2026-05-15</td><td>1,193</td><td>0.0</td><td>2026-05-29</td><td>10,070</td><td class="positive">+744%</td><td>end_of_data</td></tr>
+<tr class="positive"><td>6</td><td>123840</td><td>2026-04-27</td><td>555</td><td>13.5</td><td>2026-05-13</td><td>4,530</td><td class="positive">+716%</td><td>max_hold</td></tr>
+<tr class="positive"><td>7</td><td>078130</td><td>2026-05-15</td><td>436</td><td>4.9</td><td>2026-05-29</td><td>3,495</td><td class="positive">+702%</td><td>end_of_data</td></tr>
+<tr class="positive"><td>8</td><td>320000</td><td>2026-04-30</td><td>1,533</td><td>0.0</td><td>2026-05-18</td><td>11,980</td><td class="positive">+681%</td><td>max_hold</td></tr>
+<tr class="positive"><td>9</td><td>058450</td><td>2026-04-24</td><td>647</td><td>0.0</td><td>2026-05-12</td><td>5,010</td><td class="positive">+674%</td><td>max_hold</td></tr>
+<tr class="positive"><td>10</td><td>052420</td><td>2026-05-18</td><td>1,448</td><td>0.0</td><td>2026-05-29</td><td>10,310</td><td class="positive">+612%</td><td>end_of_data</td></tr>
+</table>
+<p style="color:#888;font-size:0.9em">TOP 10 모두 2026년 4~5월 진입 — 최근 시장에서 저가주 급등이 집중적으로 발생.</p>
+</div>
+
+<div class="section">
+<h2>💡 핵심 인사이트</h2>
+<div class="insight">
+<h3>1. RSI ≤10 = 황금 구간 (PF 97.23)</h3>
+<p>RSI 10 이하 진입 시 평균 수익률 +188%, PF 97. 83건 중 45건 승리. "극도의 공포"가 최고의 기회.</p>
+</div>
+<div class="insight">
+<h3>2. 1,000원 미만 = 로켓 종목 (PF 61.53)</h3>
+<p>1,000원 미만 종목에서 PF 61, 평균 +142%. 2,500원 이상은 PF 0.46으로 손실. 저가주의 폭발력이 핵심.</p>
+</div>
+<div class="insight">
+<h3>3. 10일 홀딩 = 핵심 (75.2%가 10일 청산)</h3>
+<p>10일 만기 청산 264건 중 142건(53.8%) 수익. 손절은 모두 패배(-7%). "버티는 자가 이긴다."</p>
+</div>
+<div class="insight">
+<h3>4. 2026년 4~5월 = 전략의 황금기</h3>
+<p>4월 PF 570, 5월 PF 95. 97건 거래로 평균 +204%. 최근 2개월에 전체 수익의 대부분이 집중.</p>
+</div>
+<div class="insight">
+<h3>5. 중간값 +0% vs 평균 +58%</h3>
+<p>수익률 중간값은 0% — 소수의 거대 수익(13.7%가 +50% 이상)이 평균을 견인. 분산 투자 필수.</p>
+</div>
+</div>
+
+<p style="text-align:center; color:#888; margin-top:40px;">
+Generated by OpenClaw | G_RSI20_Price3000 Deep Analysis
+</p>
+</div>
+</body>
+</html>
