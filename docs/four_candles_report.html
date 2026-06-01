@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>4타 (4-Candles) 전략 백테스트 리포트</title>
+<style>
+body { font-family: 'Segoe UI', sans-serif; margin: 40px; background: #1a1a2e; color: #eee; }
+.container { max-width: 1200px; margin: 0 auto; }
+h1 { color: #ffd700; border-bottom: 3px solid #ffd700; padding-bottom: 10px; }
+h2 { color: #00d4ff; margin-top: 40px; }
+.summary { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin: 30px 0; }
+.card { background: #16213e; padding: 25px; border-radius: 12px; text-align: center; border: 1px solid #0f3460; }
+.card .value { font-size: 2.5em; font-weight: bold; color: #ffd700; }
+.card .label { font-size: 0.9em; color: #aaa; margin-top: 8px; }
+.card.negative .value { color: #ff4757; }
+.card.positive .value { color: #2ed573; }
+table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 0.9em; }
+th { background: #0f3460; padding: 12px; text-align: center; color: #ffd700; }
+td { padding: 10px; border-bottom: 1px solid #333; text-align: center; }
+tr:hover { background: #1e3a5f; }
+.win { color: #2ed573; font-weight: bold; }
+.loss { color: #ff4757; font-weight: bold; }
+.section { background: #16213e; padding: 30px; border-radius: 12px; margin: 20px 0; }
+.chart-container { display: flex; gap: 30px; flex-wrap: wrap; }
+.chart-box { flex: 1; min-width: 300px; background: #0f3460; padding: 20px; border-radius: 8px; }
+</style>
+</head>
+<body>
+<div class="container">
+<h1>🔥 4타 (4-Candles) 전략 백테스트 리포트</h1>
+<p>기간: 2025-06-01 ~ 2026-05-29 | 대상: 전체 한국 주식 2,987종목 | EMA100 + 유동성 흡수 역이용</p>
+
+<div class="summary">
+<div class="card"><div class="value">6,720</div><div class="label">총 거래</div></div>
+<div class="card negative"><div class="value">30.5%</div><div class="label">승률</div></div>
+<div class="card"><div class="value">1.08</div><div class="label">Profit Factor</div></div>
+<div class="card"><div class="value">2.7일</div><div class="label">평균 홀딩</div></div>
+</div>
+
+<div class="summary">
+<div class="card positive"><div class="value">+836%</div><div class="label">총 수익률(합)</div></div>
+<div class="card"><div class="value">+0.12%</div><div class="label">평균 수익률</div></div>
+<div class="card negative"><div class="value">-25.54%</div><div class="label">최대 손실</div></div>
+<div class="card positive"><div class="value">+48.41%</div><div class="label">최대 수익</div></div>
+</div>
+
+<div class="section">
+<h2>📊 수익률 분포</h2>
+<div class="chart-container">
+<div class="chart-box">
+<h3>승패 분포</h3>
+<p>승: 2,049건 (30.5%)</p>
+<p>패: 4,671건 (69.5%)</p>
+<p>평균 승 수익률: +5.59%</p>
+<p>평균 패 손실률: -2.27%</p>
+</div>
+<div class="chart-box">
+<h3>수익률 구간</h3>
+<p>-20% 이하: 3건</p>
+<p>-20% ~ -10%: 61건</p>
+<p>-10% ~ 0%: 4,607건</p>
+<p>0% ~ +10%: 1,731건</p>
+<p>+10% ~ +20%: 278건</p>
+<p>+20% 이상: 40건</p>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h2>🏆 TOP 20 수익 종목</h2>
+<table>
+<tr><th>순위</th><th>종목코드</th><th>총 수익률</th><th>거래수</th><th>승</th><th>패</th><th>승률</th></tr>
+<tr><td>1</td><td>100790</td><td class='win'>+59.27%</td><td>7</td><td>6</td><td>1</td><td>86%</td></tr>
+<tr><td>2</td><td>127120</td><td class='win'>+53.83%</td><td>6</td><td>3</td><td>3</td><td>50%</td></tr>
+<tr><td>3</td><td>001550</td><td class='win'>+53.65%</td><td>5</td><td>5</td><td>0</td><td>100%</td></tr>
+<tr><td>4</td><td>007815</td><td class='win'>+53.26%</td><td>7</td><td>5</td><td>2</td><td>71%</td></tr>
+<tr><td>5</td><td>010060</td><td class='win'>+48.28%</td><td>11</td><td>7</td><td>4</td><td>64%</td></tr>
+<tr><td>6</td><td>000500</td><td class='win'>+48.21%</td><td>10</td><td>5</td><td>5</td><td>50%</td></tr>
+<tr><td>7</td><td>105840</td><td class='win'>+45.98%</td><td>6</td><td>4</td><td>2</td><td>67%</td></tr>
+<tr><td>8</td><td>123010</td><td class='win'>+43.67%</td><td>5</td><td>2</td><td>3</td><td>40%</td></tr>
+<tr><td>9</td><td>232140</td><td class='win'>+43.35%</td><td>5</td><td>4</td><td>1</td><td>80%</td></tr>
+<tr><td>10</td><td>091580</td><td class='win'>+41.24%</td><td>6</td><td>4</td><td>2</td><td>67%</td></tr>
+<tr><td>11</td><td>159010</td><td class='win'>+38.96%</td><td>5</td><td>4</td><td>1</td><td>80%</td></tr>
+<tr><td>12</td><td>393890</td><td class='win'>+38.10%</td><td>6</td><td>4</td><td>2</td><td>67%</td></tr>
+<tr><td>13</td><td>011170</td><td class='win'>+36.71%</td><td>4</td><td>2</td><td>2</td><td>50%</td></tr>
+<tr><td>14</td><td>005389</td><td class='win'>+36.55%</td><td>6</td><td>5</td><td>1</td><td>83%</td></tr>
+<tr><td>15</td><td>402340</td><td class='win'>+36.02%</td><td>4</td><td>3</td><td>1</td><td>75%</td></tr>
+<tr><td>16</td><td>002380</td><td class='win'>+35.86%</td><td>2</td><td>2</td><td>0</td><td>100%</td></tr>
+<tr><td>17</td><td>005930</td><td class='win'>+35.80%</td><td>2</td><td>2</td><td>0</td><td>100%</td></tr>
+<tr><td>18</td><td>052690</td><td class='win'>+33.78%</td><td>3</td><td>3</td><td>0</td><td>100%</td></tr>
+<tr><td>19</td><td>298040</td><td class='win'>+33.57%</td><td>10</td><td>5</td><td>5</td><td>50%</td></tr>
+<tr><td>20</td><td>093190</td><td class='win'>+32.13%</td><td>3</td><td>3</td><td>0</td><td>100%</td></tr>
+</table>
+</div>
+
+<div class="section">
+<h2>💀 TOP 20 손실 종목</h2>
+<table>
+<tr><th>순위</th><th>종목코드</th><th>총 손실률</th><th>거래수</th><th>승</th><th>패</th><th>승률</th></tr>
+<tr><td>20</td><td>093190</td><td class='loss'>32.13%</td><td>3</td><td>3</td><td>0</td><td>100%</td></tr>
+<tr><td>19</td><td>298040</td><td class='loss'>33.57%</td><td>10</td><td>5</td><td>5</td><td>50%</td></tr>
+<tr><td>18</td><td>052690</td><td class='loss'>33.78%</td><td>3</td><td>3</td><td>0</td><td>100%</td></tr>
+<tr><td>17</td><td>005930</td><td class='loss'>35.80%</td><td>2</td><td>2</td><td>0</td><td>100%</td></tr>
+<tr><td>16</td><td>002380</td><td class='loss'>35.86%</td><td>2</td><td>2</td><td>0</td><td>100%</td></tr>
+<tr><td>15</td><td>402340</td><td class='loss'>36.02%</td><td>4</td><td>3</td><td>1</td><td>75%</td></tr>
+<tr><td>14</td><td>005389</td><td class='loss'>36.55%</td><td>6</td><td>5</td><td>1</td><td>83%</td></tr>
+<tr><td>13</td><td>011170</td><td class='loss'>36.71%</td><td>4</td><td>2</td><td>2</td><td>50%</td></tr>
+<tr><td>12</td><td>393890</td><td class='loss'>38.10%</td><td>6</td><td>4</td><td>2</td><td>67%</td></tr>
+<tr><td>11</td><td>159010</td><td class='loss'>38.96%</td><td>5</td><td>4</td><td>1</td><td>80%</td></tr>
+<tr><td>10</td><td>091580</td><td class='loss'>41.24%</td><td>6</td><td>4</td><td>2</td><td>67%</td></tr>
+<tr><td>9</td><td>232140</td><td class='loss'>43.35%</td><td>5</td><td>4</td><td>1</td><td>80%</td></tr>
+<tr><td>8</td><td>123010</td><td class='loss'>43.67%</td><td>5</td><td>2</td><td>3</td><td>40%</td></tr>
+<tr><td>7</td><td>105840</td><td class='loss'>45.98%</td><td>6</td><td>4</td><td>2</td><td>67%</td></tr>
+<tr><td>6</td><td>000500</td><td class='loss'>48.21%</td><td>10</td><td>5</td><td>5</td><td>50%</td></tr>
+<tr><td>5</td><td>010060</td><td class='loss'>48.28%</td><td>11</td><td>7</td><td>4</td><td>64%</td></tr>
+<tr><td>4</td><td>007815</td><td class='loss'>53.26%</td><td>7</td><td>5</td><td>2</td><td>71%</td></tr>
+<tr><td>3</td><td>001550</td><td class='loss'>53.65%</td><td>5</td><td>5</td><td>0</td><td>100%</td></tr>
+<tr><td>2</td><td>127120</td><td class='loss'>53.83%</td><td>6</td><td>3</td><td>3</td><td>50%</td></tr>
+<tr><td>1</td><td>100790</td><td class='loss'>59.27%</td><td>7</td><td>6</td><td>1</td><td>86%</td></tr>
+</table>
+</div>
+
+<div class="section">
+<h2>📅 월별 성과</h2>
+<table>
+<tr><th>월</th><th>거래수</th><th>승</th><th>승률</th><th>평균수익률</th><th>월간총수익</th></tr>
+<tr><td>2025-11</td><td>147</td><td>71</td><td>48.3%</td><td class='win'>+1.20%</td><td class='win'>+176.60%</td></tr>
+<tr><td>2025-12</td><td>1123</td><td>312</td><td>27.8%</td><td class='loss'>-0.03%</td><td class='loss'>-31.53%</td></tr>
+<tr><td>2026-01</td><td>898</td><td>271</td><td>30.2%</td><td class='win'>+0.46%</td><td class='win'>+410.89%</td></tr>
+<tr><td>2026-02</td><td>963</td><td>316</td><td>32.8%</td><td class='loss'>-0.03%</td><td class='loss'>-29.43%</td></tr>
+<tr><td>2026-03</td><td>1429</td><td>427</td><td>29.9%</td><td class='win'>+0.07%</td><td class='win'>+95.08%</td></tr>
+<tr><td>2026-04</td><td>1194</td><td>491</td><td>41.1%</td><td class='win'>+0.98%</td><td class='win'>+1173.05%</td></tr>
+<tr><td>2026-05</td><td>966</td><td>161</td><td>16.7%</td><td class='loss'>-0.99%</td><td class='loss'>-958.30%</td></tr>
+</table>
+</div>
+
+<div class="section">
+<h2>⏱️ 홀딩 기간 분포</h2>
+<table>
+<tr><th>홀딩일수</th><th>거래수</th><th>비율</th></tr>
+<tr><td>1일</td><td>4435</td><td>66.0%</td></tr>
+<tr><td>2일</td><td>793</td><td>11.8%</td></tr>
+<tr><td>3일</td><td>399</td><td>5.9%</td></tr>
+<tr><td>4일</td><td>239</td><td>3.6%</td></tr>
+<tr><td>5일</td><td>157</td><td>2.3%</td></tr>
+<tr><td>6일</td><td>117</td><td>1.7%</td></tr>
+<tr><td>7일</td><td>82</td><td>1.2%</td></tr>
+<tr><td>8일</td><td>77</td><td>1.1%</td></tr>
+<tr><td>9일</td><td>55</td><td>0.8%</td></tr>
+<tr><td>10일</td><td>61</td><td>0.9%</td></tr>
+<tr><td>11일</td><td>38</td><td>0.6%</td></tr>
+<tr><td>12일</td><td>39</td><td>0.6%</td></tr>
+<tr><td>13일</td><td>30</td><td>0.4%</td></tr>
+<tr><td>14일</td><td>26</td><td>0.4%</td></tr>
+<tr><td>15일</td><td>19</td><td>0.3%</td></tr>
+<tr><td>16일</td><td>19</td><td>0.3%</td></tr>
+<tr><td>17일</td><td>11</td><td>0.2%</td></tr>
+<tr><td>18일</td><td>9</td><td>0.1%</td></tr>
+<tr><td>19일</td><td>7</td><td>0.1%</td></tr>
+<tr><td>20일</td><td>13</td><td>0.2%</td></tr>
+<tr><td>21일</td><td>6</td><td>0.1%</td></tr>
+<tr><td>22일</td><td>5</td><td>0.1%</td></tr>
+<tr><td>23일</td><td>7</td><td>0.1%</td></tr>
+<tr><td>24일</td><td>4</td><td>0.1%</td></tr>
+<tr><td>25일</td><td>3</td><td>0.0%</td></tr>
+<tr><td>26일</td><td>3</td><td>0.0%</td></tr>
+<tr><td>27일</td><td>1</td><td>0.0%</td></tr>
+<tr><td>28일</td><td>9</td><td>0.1%</td></tr>
+<tr><td>29일</td><td>6</td><td>0.1%</td></tr>
+<tr><td>30일</td><td>4</td><td>0.1%</td></tr>
+<tr><td>31일</td><td>4</td><td>0.1%</td></tr>
+<tr><td>32일</td><td>4</td><td>0.1%</td></tr>
+<tr><td>33일</td><td>2</td><td>0.0%</td></tr>
+<tr><td>34일</td><td>4</td><td>0.1%</td></tr>
+<tr><td>35일</td><td>3</td><td>0.0%</td></tr>
+<tr><td>36일</td><td>2</td><td>0.0%</td></tr>
+<tr><td>37일</td><td>2</td><td>0.0%</td></tr>
+<tr><td>38일</td><td>3</td><td>0.0%</td></tr>
+<tr><td>39일</td><td>2</td><td>0.0%</td></tr>
+<tr><td>40일</td><td>1</td><td>0.0%</td></tr>
+<tr><td>41일</td><td>3</td><td>0.0%</td></tr>
+<tr><td>43일</td><td>2</td><td>0.0%</td></tr>
+<tr><td>44일</td><td>1</td><td>0.0%</td></tr>
+<tr><td>45일</td><td>2</td><td>0.0%</td></tr>
+<tr><td>46일</td><td>2</td><td>0.0%</td></tr>
+<tr><td>48일</td><td>1</td><td>0.0%</td></tr>
+<tr><td>51일</td><td>2</td><td>0.0%</td></tr>
+<tr><td>52일</td><td>1</td><td>0.0%</td></tr>
+<tr><td>53일</td><td>1</td><td>0.0%</td></tr>
+<tr><td>55일</td><td>1</td><td>0.0%</td></tr>
+<tr><td>58일</td><td>1</td><td>0.0%</td></tr>
+<tr><td>64일</td><td>1</td><td>0.0%</td></tr>
+<tr><td>77일</td><td>1</td><td>0.0%</td></tr>
+</table>
+</div>
+
+<p style="text-align:center; color:#888; margin-top:40px;">Generated by OpenClaw | 4-Candles Strategy Backtest</p>
+</div>
+</body>
+</html>
