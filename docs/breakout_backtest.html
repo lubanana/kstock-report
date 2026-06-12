@@ -1,0 +1,69 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ATH Breakout 백테스트</title>
+<style>
+body { font-family: -apple-system, sans-serif; background:#0f172a; color:#e2e8f0; margin:0; padding:16px; max-width:480px; margin:0 auto; }
+header { text-align:center; padding:20px 0; border-bottom:2px solid #f59e0b; }
+h1 { color:#fbbf24; font-size:1.3rem; margin:0; }
+.card { background:#1e293b; border-radius:12px; padding:16px; margin:12px 0; }
+.metric-row { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; text-align:center; }
+.metric-value { font-size:1.8rem; font-weight:700; }
+.metric-label { font-size:0.7rem; color:#94a3b8; margin-top:4px; }
+.pos { color:#4ade80; } .neg { color:#f87171; }
+.section-title { color:#fbbf24; font-size:1rem; font-weight:600; margin:20px 0 10px; }
+table { width:100%; border-collapse:collapse; font-size:0.75rem; }
+th { background:#0f172a; color:#fbbf24; padding:8px; text-align:center; }
+td { padding:8px; border-bottom:1px solid #334155; text-align:center; }
+tr:hover td { background:rgba(251,191,36,0.05); }
+.footer { text-align:center; padding:20px 0; font-size:0.7rem; color:#64748b; }
+</style>
+</head>
+<body>
+<header>
+<h1>📈 ATH Breakout 백테스트</h1>
+<p style="color:#94a3b8;font-size:0.8rem;margin:4px 0 0;">거래대금 상위 100 + 52주 신고가 돌파</p>
+</header>
+
+<div class="card">
+<div class="metric-row">
+<div><div class="metric-value">577</div><div class="metric-label">총 거래</div></div>
+<div><div class="metric-value neg">39.2%</div><div class="metric-label">승률</div></div>
+<div><div class="metric-value pos">1.65</div><div class="metric-label">PF</div></div>
+</div>
+<div style="height:1px;background:#334155;margin:12px 0;"></div>
+<div class="metric-row">
+<div><div class="metric-value pos">+3.8%</div><div class="metric-label">평균</div></div>
+<div><div class="metric-value">-10.0%</div><div class="metric-label">중간값</div></div>
+<div><div class="metric-value">+2183.4%</div><div class="metric-label">총수익</div></div>
+</div>
+</div>
+
+<div class="card">
+<div class="metric-row">
+<div><div class="metric-value">+363.2%</div><div class="metric-label">최대</div></div>
+<div><div class="metric-value">-10.0%</div><div class="metric-label">최소</div></div>
+<div><div class="metric-value">33.1일</div><div class="metric-label">평균홀딩</div></div>
+</div>
+</div>
+
+<div class="card">
+<div class="section-title">청산 사유</div>
+<div class="metric-row">
+<div><div class="metric-value">325</div><div class="metric-label">-10% 손절</div></div>
+<div><div class="metric-value">183</div><div class="metric-label">20선 이탈</div></div>
+<div><div class="metric-value">69</div><div class="metric-label">60일 만료</div></div>
+</div>
+</div>
+
+<div class="section-title">최근 거래 내역</div>
+<table>
+<tr><th>진입</th><th>종목</th><th>수익</th><th>청산</th><th>사유</th></tr>
+<tr><td>2025-01-24</td><td>000150</td><td class='neg'>-10.0%</td><td>2025-01-31</td><td>stop_loss</td></tr><tr><td>2025-02-19</td><td>000150</td><td class='neg'>-10.0%</td><td>2025-02-28</td><td>stop_loss</td></tr><tr><td>2025-05-15</td><td>000150</td><td class='pos'>+44.0%</td><td>2025-07-02</td><td>ma20_exit</td></tr><tr><td>2025-05-28</td><td>000150</td><td class='pos'>+16.2%</td><td>2025-07-02</td><td>ma20_exit</td></tr><tr><td>2025-10-23</td><td>000150</td><td class='pos'>+15.6%</td><td>2025-11-14</td><td>ma20_exit</td></tr><tr><td>2025-10-30</td><td>000150</td><td class='neg'>-10.0%</td><td>2025-11-21</td><td>stop_loss</td></tr><tr><td>2025-06-12</td><td>000155</td><td class='neg'>-10.0%</td><td>2025-06-20</td><td>stop_loss</td></tr><tr><td>2024-03-26</td><td>000250</td><td class='neg'>-10.0%</td><td>2024-04-08</td><td>stop_loss</td></tr><tr><td>2026-02-20</td><td>000250</td><td class='neg'>-10.0%</td><td>2026-02-25</td><td>stop_loss</td></tr><tr><td>2026-02-27</td><td>000250</td><td class='neg'>-10.0%</td><td>2026-03-03</td><td>stop_loss</td></tr><tr><td>2024-02-02</td><td>000270</td><td class='pos'>+8.7%</td><td>2024-05-02</td><td>max_hold</td></tr><tr><td>2026-01-12</td><td>000270</td><td class='pos'>+11.7%</td><td>2026-02-06</td><td>ma20_exit</td></tr><tr><td>2026-01-16</td><td>000270</td><td class='neg'>-0.8%</td><td>2026-03-04</td><td>ma20_exit</td></tr><tr><td>2026-02-11</td><td>000390</td><td class='neg'>-10.0%</td><td>2026-02-11</td><td>stop_loss</td></tr><tr><td>2024-02-14</td><td>000660</td><td class='pos'>+22.1%</td><td>2024-04-17</td><td>ma20_exit</td></tr><tr><td>2024-02-23</td><td>000660</td><td class='pos'>+19.8%</td><td>2024-05-23</td><td>max_hold</td></tr><tr><td>2024-04-01</td><td>000660</td><td class='pos'>+26.9%</td><td>2024-06-28</td><td>max_hold</td></tr><tr><td>2024-05-23</td><td>000660</td><td class='neg'>-10.0%</td><td>2024-08-02</td><td>stop_loss</td></tr><tr><td>2024-06-13</td><td>000660</td><td class='neg'>-10.0%</td><td>2024-07-25</td><td>stop_loss</td></tr><tr><td>2024-06-19</td><td>000660</td><td class='neg'>-10.0%</td><td>2024-07-19</td><td>stop_loss</td></tr>
+</table>
+<div class="footer">Generated by OpenClaw | ATH Breakout Strategy</div>
+</body>
+</html>
