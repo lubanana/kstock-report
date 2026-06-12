@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head><meta charset="UTF-8">
+<title>투자자 연속 순매수 패턴 분석</title>
+<style>
+body{font-family:'Segoe UI',sans-serif;margin:40px;background:#1a1a2e;color:#eee;}
+.container{max-width:1400px;margin:0 auto;}
+h1{color:#ffd700;border-bottom:3px solid #ffd700;padding-bottom:10px;}
+h2{color:#00d4ff;margin-top:40px;}
+.card-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin:30px 0;}
+.card{background:#16213e;padding:25px;border-radius:12px;text-align:center;border:1px solid #0f3460;}
+.card .value{font-size:2.5em;font-weight:bold;color:#ffd700;}
+.card .label{font-size:0.9em;color:#aaa;margin-top:8px;}
+.card.positive .value{color:#2ed573;} .card.negative .value{color:#ff4757;}
+table{width:100%;border-collapse:collapse;margin:20px 0;font-size:0.9em;}
+th{background:#0f3460;padding:12px;text-align:center;color:#ffd700;}
+td{padding:10px;border-bottom:1px solid #333;text-align:center;}
+tr:hover{background:#1e3a5f;}
+tr.gold{background:rgba(255,215,0,0.1);}
+tr.positive{background:rgba(46,213,115,0.1);}
+tr.negative{background:rgba(255,71,87,0.1);}
+.section{background:#16213e;padding:30px;border-radius:12px;margin:20px 0;}
+</style></head>
+<body><div class="container">
+<h1>📊 투자자 연속 순매수 + 저가 반등 패턴 분석</h1>
+<p>기간: 2025-06-02 ~ 2026-06-11 | 키움증권 ka10060 데이터 기반</p>
+<div class="card-grid">
+<div class="card"><div class="value">137,844</div><div class="label">총 병합 데이터</div></div>
+<div class="card"><div class="value">2772</div><div class="label">대상 종목</div></div>
+<div class="card"><div class="value">18</div><div class="label">분석 시나리오</div></div>
+<div class="card"><div class="value">18</div><div class="label">유의미한 시나리오</div></div>
+</div>
+<div class="section"><h2>🏆 5일 후 기준 TOP 시나리오 (신호 5건 이상)</h2>
+<table><tr><th>순위</th><th>시나리오</th><th>신호</th><th>승률</th><th>PF</th><th>평균</th><th>중간값</th><th>최대</th><th>최소</th></tr><tr class="gold"><td>1</td><td>외국인+연기금 동시 3연속순매수</td><td>429</td>
+<td>52.7%</td><td>2.08</td>
+<td style="color:#2ed573">+3.95%</td>
+<td>+0.52%</td><td>+360.1%</td><td>-34.4%</td></tr><tr class="positive"><td>2</td><td>외국인+기관+연기금 동시 3연속순매수</td><td>156</td>
+<td>52.6%</td><td>2.08</td>
+<td style="color:#2ed573">+4.06%</td>
+<td>+0.66%</td><td>+144.6%</td><td>-34.4%</td></tr><tr class="positive"><td>3</td><td>연기금 3일 연속 순매수</td><td>3052</td>
+<td>47.6%</td><td>1.51</td>
+<td style="color:#2ed573">+2.07%</td>
+<td>-0.48%</td><td>+360.1%</td><td>-65.3%</td></tr><tr class="positive"><td>4</td><td>사모펀드 3일 연속 순매수</td><td>3661</td>
+<td>44.2%</td><td>1.27</td>
+<td style="color:#2ed573">+1.13%</td>
+<td>-0.76%</td><td>+366.9%</td><td>-71.6%</td></tr><tr class="positive"><td>5</td><td>외국인+기관 동시 3연속순매수</td><td>925</td>
+<td>43.6%</td><td>1.09</td>
+<td style="color:#2ed573">+0.42%</td>
+<td>-0.74%</td><td>+366.9%</td><td>-85.4%</td></tr><tr class="positive"><td>6</td><td>외국인3연속+기관3연속+개인순매도</td><td>909</td>
+<td>43.5%</td><td>1.10</td>
+<td style="color:#2ed573">+0.45%</td>
+<td>-0.75%</td><td>+366.9%</td><td>-85.4%</td></tr><tr class="negative"><td>7</td><td>외국인 3일 연속 순매수</td><td>14929</td>
+<td>42.9%</td><td>1.00</td>
+<td style="color:#ff4757">-0.00%</td>
+<td>-1.14%</td><td>+1058.1%</td><td>-85.4%</td></tr><tr class="positive"><td>8</td><td>기관 3일 연속 순매수</td><td>9010</td>
+<td>42.5%</td><td>1.06</td>
+<td style="color:#2ed573">+0.27%</td>
+<td>-1.00%</td><td>+439.4%</td><td>-85.4%</td></tr><tr class="negative"><td>9</td><td>외국인 5일 연속 순매수 (강신호)</td><td>4882</td>
+<td>42.4%</td><td>0.82</td>
+<td style="color:#ff4757">-0.71%</td>
+<td>-1.07%</td><td>+162.6%</td><td>-54.0%</td></tr><tr class="negative"><td>10</td><td>기관 5일 연속 순매수 (강신호)</td><td>3991</td>
+<td>40.8%</td><td>0.80</td>
+<td style="color:#ff4757">-0.86%</td>
+<td>-1.19%</td><td>+103.3%</td><td>-41.6%</td></tr><tr class="negative"><td>11</td><td>기타법인 3일 연속 순매수</td><td>11793</td>
+<td>40.0%</td><td>0.91</td>
+<td style="color:#ff4757">-0.40%</td>
+<td>-1.59%</td><td>+1951.7%</td><td>-77.6%</td></tr><tr class="negative"><td>12</td><td>외국인+기관 5일 동시 연속</td><td>97</td>
+<td>39.2%</td><td>0.97</td>
+<td style="color:#ff4757">-0.10%</td>
+<td>-0.65%</td><td>+51.5%</td><td>-29.8%</td></tr><tr class="negative"><td>13</td><td>기관 3연속순매수 + 전일하락</td><td>2050</td>
+<td>36.0%</td><td>0.61</td>
+<td style="color:#ff4757">-2.08%</td>
+<td>-2.96%</td><td>+112.2%</td><td>-66.7%</td></tr><tr class="negative"><td>14</td><td>기관 3연속순매수 + MA5아래</td><td>3688</td>
+<td>35.2%</td><td>0.59</td>
+<td style="color:#ff4757">-1.91%</td>
+<td>-2.28%</td><td>+197.2%</td><td>-66.7%</td></tr><tr class="negative"><td>15</td><td>외국인+기관 3연속순매수 + 전일하락</td><td>145</td>
+<td>35.2%</td><td>0.59</td>
+<td style="color:#ff4757">-2.06%</td>
+<td>-3.65%</td><td>+77.5%</td><td>-24.4%</td></tr><tr class="negative"><td>16</td><td>외국인+기관 3연속순매수 + MA5아래</td><td>279</td>
+<td>33.7%</td><td>0.54</td>
+<td style="color:#ff4757">-2.37%</td>
+<td>-3.30%</td><td>+77.5%</td><td>-60.9%</td></tr><tr class="negative"><td>17</td><td>외국인 3연속순매수 + MA5아래</td><td>7272</td>
+<td>33.2%</td><td>0.56</td>
+<td style="color:#ff4757">-2.19%</td>
+<td>-3.11%</td><td>+173.4%</td><td>-72.8%</td></tr><tr class="negative"><td>18</td><td>외국인 3연속순매수 + 전일하락</td><td>3464</td>
+<td>33.1%</td><td>0.57</td>
+<td style="color:#ff4757">-2.32%</td>
+<td>-3.50%</td><td>+143.9%</td><td>-70.1%</td></tr></table></div><div class="section"><h2>⚡ 1일 후 기준 TOP 시나리오</h2>
+<table><tr><th>순위</th><th>시나리오</th><th>신호</th><th>승률</th><th>PF</th><th>평균</th></tr><tr class="positive"><td>1</td><td>외국인+기관+연기금 동시 3연속순매수</td><td>164</td>
+<td>50.6%</td><td>2.22</td>
+<td style="color:#2ed573">+2.03%</td></tr><tr class="positive"><td>2</td><td>외국인+연기금 동시 3연속순매수</td><td>460</td>
+<td>50.4%</td><td>2.90</td>
+<td style="color:#2ed573">+2.80%</td></tr><tr class="positive"><td>3</td><td>외국인+기관 3연속순매수 + 전일하락</td><td>181</td>
+<td>50.3%</td><td>1.55</td>
+<td style="color:#2ed573">+0.82%</td></tr><tr class="positive"><td>4</td><td>외국인+기관 3연속순매수 + MA5아래</td><td>351</td>
+<td>47.6%</td><td>1.20</td>
+<td style="color:#2ed573">+0.32%</td></tr><tr class="positive"><td>5</td><td>외국인3연속+기관3연속+개인순매도</td><td>1003</td>
+<td>47.2%</td><td>1.69</td>
+<td style="color:#2ed573">+1.19%</td></tr><tr class="positive"><td>6</td><td>외국인+기관 동시 3연속순매수</td><td>1020</td>
+<td>46.9%</td><td>1.65</td>
+<td style="color:#2ed573">+1.13%</td></tr><tr class="positive"><td>7</td><td>외국인 5일 연속 순매수 (강신호)</td><td>5492</td>
+<td>46.7%</td><td>1.13</td>
+<td style="color:#2ed573">+0.17%</td></tr><tr class="positive"><td>8</td><td>연기금 3일 연속 순매수</td><td>3320</td>
+<td>46.4%</td><td>1.84</td>
+<td style="color:#2ed573">+1.48%</td></tr><tr class="positive"><td>9</td><td>기관 3연속순매수 + 전일하락</td><td>2459</td>
+<td>45.9%</td><td>1.03</td>
+<td style="color:#2ed573">+0.06%</td></tr><tr class="positive"><td>10</td><td>외국인 3일 연속 순매수</td><td>16491</td>
+<td>45.8%</td><td>1.33</td>
+<td style="color:#2ed573">+0.58%</td></tr><tr class="positive"><td>11</td><td>외국인 3연속순매수 + 전일하락</td><td>4093</td>
+<td>45.4%</td><td>1.04</td>
+<td style="color:#2ed573">+0.07%</td></tr><tr class="positive"><td>12</td><td>기관 3일 연속 순매수</td><td>9985</td>
+<td>44.7%</td><td>1.34</td>
+<td style="color:#2ed573">+0.62%</td></tr><tr class="positive"><td>13</td><td>기관 5일 연속 순매수 (강신호)</td><td>4445</td>
+<td>44.7%</td><td>1.06</td>
+<td style="color:#2ed573">+0.08%</td></tr><tr class="positive"><td>14</td><td>사모펀드 3일 연속 순매수</td><td>4010</td>
+<td>44.6%</td><td>1.62</td>
+<td style="color:#2ed573">+1.11%</td></tr><tr class="negative"><td>15</td><td>기관 3연속순매수 + MA5아래</td><td>4355</td>
+<td>43.9%</td><td>0.93</td>
+<td style="color:#ff4757">-0.13%</td></tr></table></div><div class="section"><h2>📈 10일 후 기준 TOP 시나리오</h2>
+<table><tr><th>순위</th><th>시나리오</th><th>신호</th><th>승률</th><th>PF</th><th>평균</th></tr><tr class="positive"><td>1</td><td>외국인+기관+연기금 동시 3연속순매수</td><td>148</td>
+<td>50.0%</td><td>2.60</td>
+<td style="color:#2ed573">+7.18%</td></tr><tr class="positive"><td>2</td><td>외국인+연기금 동시 3연속순매수</td><td>376</td>
+<td>49.2%</td><td>2.19</td>
+<td style="color:#2ed573">+5.81%</td></tr><tr class="positive"><td>3</td><td>연기금 3일 연속 순매수</td><td>2747</td>
+<td>47.0%</td><td>1.47</td>
+<td style="color:#2ed573">+2.71%</td></tr><tr class="positive"><td>4</td><td>사모펀드 3일 연속 순매수</td><td>3172</td>
+<td>43.4%</td><td>1.27</td>
+<td style="color:#2ed573">+1.66%</td></tr><tr class="negative"><td>5</td><td>외국인 3일 연속 순매수</td><td>12987</td>
+<td>40.4%</td><td>0.91</td>
+<td style="color:#ff4757">-0.63%</td></tr><tr class="positive"><td>6</td><td>외국인3연속+기관3연속+개인순매도</td><td>820</td>
+<td>40.1%</td><td>1.14</td>
+<td style="color:#2ed573">+0.95%</td></tr><tr class="positive"><td>7</td><td>외국인+기관 동시 3연속순매수</td><td>836</td>
+<td>40.1%</td><td>1.12</td>
+<td style="color:#2ed573">+0.81%</td></tr><tr class="negative"><td>8</td><td>기관 3일 연속 순매수</td><td>7983</td>
+<td>39.8%</td><td>0.96</td>
+<td style="color:#ff4757">-0.25%</td></tr><tr class="positive"><td>9</td><td>외국인+기관 5일 동시 연속</td><td>92</td>
+<td>39.1%</td><td>1.23</td>
+<td style="color:#2ed573">+1.28%</td></tr><tr class="negative"><td>10</td><td>외국인 5일 연속 순매수 (강신호)</td><td>4224</td>
+<td>38.3%</td><td>0.69</td>
+<td style="color:#ff4757">-2.14%</td></tr><tr class="negative"><td>11</td><td>기타법인 3일 연속 순매수</td><td>9880</td>
+<td>38.3%</td><td>0.89</td>
+<td style="color:#ff4757">-0.72%</td></tr><tr class="negative"><td>12</td><td>기관 5일 연속 순매수 (강신호)</td><td>3510</td>
+<td>35.0%</td><td>0.66</td>
+<td style="color:#ff4757">-2.32%</td></tr><tr class="negative"><td>13</td><td>기관 3연속순매수 + 전일하락</td><td>1672</td>
+<td>33.3%</td><td>0.57</td>
+<td style="color:#ff4757">-3.63%</td></tr><tr class="negative"><td>14</td><td>기관 3연속순매수 + MA5아래</td><td>2930</td>
+<td>30.2%</td><td>0.52</td>
+<td style="color:#ff4757">-3.61%</td></tr><tr class="negative"><td>15</td><td>외국인 3연속순매수 + MA5아래</td><td>5590</td>
+<td>28.7%</td><td>0.44</td>
+<td style="color:#ff4757">-4.79%</td></tr></table></div><div class="section"><h2>💡 핵심 인사이트</h2>
+<p>단순 순매수 추종은 하락장(2025-06~2026-06)에서 역효과. 연속 순매수 + 저가 반등(전일 하락 or MA5 아래) 조건을 결합하면 승률/평균 수익률 개선 가능.</p>
+</div>
+<p style="text-align:center;color:#888;margin-top:40px;">Generated by OpenClaw | Investor Pattern V2</p>
+</div></body></html>
