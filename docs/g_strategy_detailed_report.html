@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎯 G-Strategy 상세 분석 리포트</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+:root{--bg:#0b1120;--card:#151e32;--accent:#38bdf8;--accent2:#22c55e;--accent3:#f59e0b;--danger:#ef4444;--text:#e2e8f0;--muted:#94a3b8;--border:#1e293b;}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;margin:0}
+.container{max-width:1000px;margin:0 auto;padding:20px}
+h1{font-size:1.8rem;margin-bottom:8px;color:#fff}
+h2{font-size:1.3rem;margin:35px 0 15px;color:var(--accent);border-bottom:2px solid var(--accent);padding-bottom:8px}
+h3{font-size:1.05rem;color:var(--accent3);margin:25px 0 10px}
+.subtitle{color:var(--muted);font-size:0.9rem;margin-bottom:24px}
+.card{background:var(--card);border-radius:12px;padding:22px;margin-bottom:20px;border:1px solid var(--border)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px}
+.metric{text-align:center;padding:18px 10px;background:rgba(255,255,255,0.03);border-radius:10px}
+.metric-value{font-size:1.6rem;font-weight:700}
+.metric-label{font-size:0.7rem;color:var(--muted);margin-top:6px;text-transform:uppercase;letter-spacing:0.5px}
+.positive{color:#34d399} .negative{color:#f87171} .neutral{color:var(--muted)}
+.highlight{background:rgba(56,189,248,0.08);border-left:4px solid var(--accent);padding:12px 16px;border-radius:0 8px 8px 0;margin:12px 0}
+.warning{background:rgba(245,158,11,0.08);border-left:4px solid var(--accent3);padding:12px 16px;border-radius:0 8px 8px 0;margin:12px 0}
+.danger{background:rgba(239,68,68,0.08);border-left:4px solid var(--danger);padding:12px 16px;border-radius:0 8px 8px 0;margin:12px 0}
+table{width:100%;border-collapse:collapse;font-size:0.85rem;margin:12px 0}
+th,td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--border)}
+th{background:rgba(56,189,248,0.1);color:var(--accent);font-size:0.75rem;font-weight:600}
+.num{text-align:right;font-family:monospace}
+.tag{display:inline-block;padding:3px 10px;border-radius:12px;font-size:0.75rem;font-weight:600;margin-right:4px}
+.tag.buy{background:#064e3b;color:#34d399} .tag.sell{background:#7f1d1d;color:#f87171}
+.tag.target{background:#1e3a8a;color:#60a5fa} .tag.stop{background:#451a03;color:#fbbf24}
+.tag.rsi{background:#581c87;color:#c084fc} .tag.time{background:#1f2937;color:#9ca3af}
+.chart-container{background:var(--card);border-radius:12px;padding:16px;margin:16px 0;border:1px solid var(--border);height:320px}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:768px){.two-col{grid-template-columns:1fr}}
+.footer{text-align:center;color:var(--muted);font-size:0.75rem;margin-top:40px;padding-top:20px;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>🎯 G-Strategy 상세 분석 리포트</h1>
+<p class="subtitle">RSI 과매도 + 저가 회귀 + EMA 상승추세 | 생성: 2026-06-17 08:12</p>
+
+<!-- 전략 개요 -->
+<div class="card">
+<h2>📋 전략 개요</h2>
+<p>G-Strategy는 <strong>3중 필터 시스템</strong>으로 과매도 상태의 우량주를 저가에 진입하여 추세 반등을 노리는 전략이다.</p>
+
+<h3>진입 조건 (AND)</h3>
+<div class="highlight">
+<strong>① RSI(14) ≤ 30</strong> — 과매도 구간 진입<br>
+<strong>② 종가 ≤ 20일 최저가 × 1.05</strong> — 저가 부근에서 진입<br>
+<strong>③ EMA20 > EMA50</strong> — 장기 상승추세 유지
+</div>
+
+<h3>하드 필터</h3>
+<ul style="color:var(--muted);font-size:0.9rem">
+<li>거래량 ≥ 1,000주 (유동성 확보)</li>
+<li>동일 종목 중복 포지션 불가</li>
+<li>최대 동시 포지션 5개</li>
+</ul>
+
+<h3>청산 조건 (OR — 선도달)</h3>
+<div class="two-col">
+<div>
+<p><span class="tag target">익절</span> <strong>+10%</strong> 도달</p>
+<p><span class="tag stop">손절</span> <strong>-7%</strong> 도달</p>
+</div>
+<div>
+<p><span class="tag rsi">RSI</span> <strong>≥ 60</strong> (과매수)</p>
+<p><span class="tag time">시간</span> <strong>10거래일</strong> 경과</p>
+</div>
+</div>
+</div>
+
+<!-- 백테스트 vs 페이퍼트레이딩 -->
+<div class="card">
+<h2>📊 성과 비교</h2>
+
+<table>
+<thead>
+<tr><th>구분</th><th class="num">거래수</th><th class="num">승률</th><th class="num">평균수익</th><th class="num">PF</th><th class="num">총수익</th><th class="num">최고</th><th class="num">최악</th></tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>백테스트</strong><br><span style="font-size:0.75rem;color:var(--muted)">2024-01 ~ 2026-06<br>2,990종목</span></td>
+<td class="num">7,698</td>
+<td class="num negative">37.4%</td>
+<td class="num positive">+2.89%</td>
+<td class="num positive">2.14</td>
+<td class="num">+22,284%</td>
+<td class="num positive">+2886.1%</td>
+<td class="num negative">-100.0%</td>
+</tr>
+<tr style="background:rgba(34,197,94,0.05)">
+<td><strong>페이퍼트레이딩</strong><br><span style="font-size:0.75rem;color:var(--muted)">2026-01 ~ 2026-02<br>실시간 데이터</span></td>
+<td class="num">18</td>
+<td class="num positive">77.8%</td>
+<td class="num positive">+3.18%</td>
+<td class="num positive">4.17</td>
+<td class="num positive">+5.71%</td>
+<td class="num positive">+22.47%</td>
+<td class="num negative">-8.23%</td>
+</tr>
+</tbody>
+</table>
+
+<div class="warning">
+<strong>⚠️ 주의:</strong> 페이퍼트레이딩 기간(38거래일)이 짧아 백테스트와 직접 비교는 어렵다. 장기 샘플(7,698건) 기준으로 판단해야 한다.
+</div>
+</div>
+
+<!-- 핵심 특성 -->
+<div class="card">
+<h2>🔍 핵심 특성 분석</h2>
+
+<div class="grid">
+<div class="metric">
+<div class="metric-value" style="color:var(--accent3)">2.14</div>
+<div class="metric-label">Profit Factor</div>
+</div>
+<div class="metric">
+<div class="metric-value" style="color:var(--accent3)">2.89%</div>
+<div class="metric-label">기대수익/거래</div>
+</div>
+<div class="metric">
+<div class="metric-value">8.8일</div>
+<div class="metric-label">평균 홀딩</div>
+</div>
+<div class="metric">
+<div class="metric-value positive">5연승</div>
+<div class="metric-label">최대 연승</div>
+</div>
+<div class="metric">
+<div class="metric-value negative">1연패</div>
+<div class="metric-label">최대 연패</div>
+</div>
+<div class="metric">
+<div class="metric-value" style="color:var(--accent3)">1</div>
+<div class="metric-label">+10% 이상 거래</div>
+</div>
+</div>
+
+<div class="highlight">
+<strong>💡 핵심 인사이트:</strong><br>
+승률은 낮은(37.4%) 반면 PF는 2.14로 매우 높다. 이는 <strong>"이기면 크게 이기고, 지면 작게 지는"</strong> 비대칭 수익구조를 의미한다.<br>
+평균 홀딩 8.8일로 단기 스윙 성격이 강하며, 최대 수익 +2,886%는 극단적 이상치(outlier)로 보인다.
+</div>
+</div>
+
+<!-- 청산 사유별 분석 -->
+<div class="card">
+<h2>🚪 청산 사유별 분석 (페이퍼트레이딩)</h2>
+<table>
+<thead>
+<tr><th>사유</th><th class="num">건수</th><th class="num">비중</th><th class="num">승률</th><th class="num">평균수익</th><th>설명</th></tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="tag rsi">RSI≥60</span></td>
+<td class="num">8</td>
+<td class="num">44.4%</td>
+<td class="num positive">100%</td>
+<td class="num positive">+2.32%</td>
+<td style="font-size:0.8rem;color:var(--muted)">과매수 진입 — 추가 상승 여력 소진</td></tr>
+<tr>
+<td><span class="tag stop">손절(-7%)</span></td>
+<td class="num">4</td>
+<td class="num">22.2%</td>
+<td class="num negative">25%</td>
+<td class="num negative">-3.94%</td>
+<td style="font-size:0.8rem;color:var(--muted)">손절선 도달 — 리스크 관리 성공</td></tr>
+<tr>
+<td><span class="tag target">익절(+10%)</span></td>
+<td class="num">5</td>
+<td class="num">27.8%</td>
+<td class="num positive">100%</td>
+<td class="num positive">+11.18%</td>
+<td style="font-size:0.8rem;color:var(--muted)">목표가 도달로 안전하게 청산</td></tr>
+<tr>
+<td><span class="tag time">10일경과</span></td>
+<td class="num">1</td>
+<td class="num">5.6%</td>
+<td class="num negative">0%</td>
+<td class="num negative">-1.58%</td>
+<td style="font-size:0.8rem;color:var(--muted)">시간 만료 — 추가 기대감 없음</td></tr>
+</tbody>
+</table>
+</div>
+
+<!-- 거래 내역 테이블 -->
+<div class="card">
+<h2>📋 거래 내역 (페이퍼트레이딩)</h2>
+<table>
+<thead>
+<tr><th>종목</th><th class="num">진입일</th><th class="num">청산일</th><th class="num">진입가</th><th class="num">청산가</th><th class="num">수익률</th><th>사유</th></tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>제이케이시냅스</strong><br><span style="font-size:0.75rem;color:var(--muted)">060230</span></td>
+<td class="num">2026-02-11</td>
+<td class="num">2026-02-12</td>
+<td class="num">₩2,225</td>
+<td class="num">₩2,725</td>
+<td class="num positive">+22.47%</td>
+<td><span class="tag target">익절</span></td>
+</tr><tr>
+<td><strong>빛과전자</strong><br><span style="font-size:0.75rem;color:var(--muted)">069540</span></td>
+<td class="num">2026-02-12</td>
+<td class="num">2026-02-23</td>
+<td class="num">₩1,092</td>
+<td class="num">₩1,200</td>
+<td class="num positive">+9.89%</td>
+<td><span class="tag target">익절</span></td>
+</tr><tr>
+<td><strong>씨메스</strong><br><span style="font-size:0.75rem;color:var(--muted)">475400</span></td>
+<td class="num">2026-02-23</td>
+<td class="num">2026-02-25</td>
+<td class="num">₩35,200</td>
+<td class="num">₩38,650</td>
+<td class="num positive">+9.80%</td>
+<td><span class="tag target">익절</span></td>
+</tr><tr>
+<td><strong>프로티나</strong><br><span style="font-size:0.75rem;color:var(--muted)">468530</span></td>
+<td class="num">2026-02-02</td>
+<td class="num">2026-02-03</td>
+<td class="num">₩75,300</td>
+<td class="num">₩81,500</td>
+<td class="num positive">+8.23%</td>
+<td><span class="tag target">익절</span></td>
+</tr><tr>
+<td><strong>중앙에너비스</strong><br><span style="font-size:0.75rem;color:var(--muted)">000440</span></td>
+<td class="num">2026-02-03</td>
+<td class="num">2026-02-10</td>
+<td class="num">₩15,550</td>
+<td class="num">₩16,510</td>
+<td class="num positive">+6.17%</td>
+<td><span class="tag rsi">RSI</span></td>
+</tr><tr>
+<td><strong>금호전기</strong><br><span style="font-size:0.75rem;color:var(--muted)">001210</span></td>
+<td class="num">2026-02-10</td>
+<td class="num">2026-02-23</td>
+<td class="num">₩887</td>
+<td class="num">₩936</td>
+<td class="num positive">+5.52%</td>
+<td><span class="tag target">익절</span></td>
+</tr><tr>
+<td><strong>IBKS제23호스팩</strong><br><span style="font-size:0.75rem;color:var(--muted)">467930</span></td>
+<td class="num">2026-02-02</td>
+<td class="num">2026-02-11</td>
+<td class="num">₩2,190</td>
+<td class="num">₩2,290</td>
+<td class="num positive">+4.57%</td>
+<td><span class="tag rsi">RSI</span></td>
+</tr><tr>
+<td><strong>이닉스</strong><br><span style="font-size:0.75rem;color:var(--muted)">452400</span></td>
+<td class="num">2026-02-02</td>
+<td class="num">2026-02-03</td>
+<td class="num">₩10,660</td>
+<td class="num">₩10,970</td>
+<td class="num positive">+2.91%</td>
+<td><span class="tag rsi">RSI</span></td>
+</tr><tr>
+<td><strong>한국수출포장</strong><br><span style="font-size:0.75rem;color:var(--muted)">002200</span></td>
+<td class="num">2026-02-03</td>
+<td class="num">2026-02-10</td>
+<td class="num">₩3,150</td>
+<td class="num">₩3,215</td>
+<td class="num positive">+2.06%</td>
+<td><span class="tag rsi">RSI</span></td>
+</tr><tr>
+<td><strong>대상우</strong><br><span style="font-size:0.75rem;color:var(--muted)">001685</span></td>
+<td class="num">2026-02-19</td>
+<td class="num">2026-02-25</td>
+<td class="num">₩17,520</td>
+<td class="num">₩17,740</td>
+<td class="num positive">+1.26%</td>
+<td><span class="tag rsi">RSI</span></td>
+</tr><tr>
+<td><strong>비엔케이제2호스팩</strong><br><span style="font-size:0.75rem;color:var(--muted)">473370</span></td>
+<td class="num">2026-02-23</td>
+<td class="num">2026-02-24</td>
+<td class="num">₩2,690</td>
+<td class="num">₩2,715</td>
+<td class="num positive">+0.93%</td>
+<td><span class="tag rsi">RSI</span></td>
+</tr><tr>
+<td><strong>원익홀딩스</strong><br><span style="font-size:0.75rem;color:var(--muted)">030530</span></td>
+<td class="num">2026-02-10</td>
+<td class="num">2026-02-19</td>
+<td class="num">₩36,250</td>
+<td class="num">₩36,500</td>
+<td class="num positive">+0.69%</td>
+<td><span class="tag stop">손절</span></td>
+</tr><tr>
+<td><strong>유니온</strong><br><span style="font-size:0.75rem;color:var(--muted)">000910</span></td>
+<td class="num">2026-02-09</td>
+<td class="num">2026-02-10</td>
+<td class="num">₩4,445</td>
+<td class="num">₩4,465</td>
+<td class="num positive">+0.45%</td>
+<td><span class="tag rsi">RSI</span></td>
+</tr><tr>
+<td><strong>교보18호스팩</strong><br><span style="font-size:0.75rem;color:var(--muted)">0041B0</span></td>
+<td class="num">2026-02-19</td>
+<td class="num">2026-02-25</td>
+<td class="num">₩2,100</td>
+<td class="num">₩2,105</td>
+<td class="num positive">+0.24%</td>
+<td><span class="tag rsi">RSI</span></td>
+</tr><tr>
+<td><strong>케이쓰리아이</strong><br><span style="font-size:0.75rem;color:var(--muted)">431190</span></td>
+<td class="num">2026-02-02</td>
+<td class="num">2026-02-19</td>
+<td class="num">₩5,070</td>
+<td class="num">₩4,990</td>
+<td class="num negative">-1.58%</td>
+<td><span class="tag time">시간</span></td>
+</tr><tr>
+<td><strong>제이엔비</strong><br><span style="font-size:0.75rem;color:var(--muted)">452160</span></td>
+<td class="num">2026-02-02</td>
+<td class="num">2026-02-06</td>
+<td class="num">₩6,650</td>
+<td class="num">₩6,410</td>
+<td class="num negative">-3.61%</td>
+<td><span class="tag stop">손절</span></td>
+</tr><tr>
+<td><strong>한일철강</strong><br><span style="font-size:0.75rem;color:var(--muted)">002220</span></td>
+<td class="num">2026-02-19</td>
+<td class="num">2026-02-23</td>
+<td class="num">₩4,455</td>
+<td class="num">₩4,250</td>
+<td class="num negative">-4.60%</td>
+<td><span class="tag stop">손절</span></td>
+</tr><tr>
+<td><strong>아시아경제</strong><br><span style="font-size:0.75rem;color:var(--muted)">127710</span></td>
+<td class="num">2026-02-10</td>
+<td class="num">2026-02-19</td>
+<td class="num">₩1,082</td>
+<td class="num">₩993</td>
+<td class="num negative">-8.23%</td>
+<td><span class="tag stop">손절</span></td>
+</tr></tbody>
+</table>
+</div>
+
+<!-- 리스크 프로파일 -->
+<div class="card">
+<h2>⚠️ 리스크 프로파일</h2>
+
+<div class="two-col">
+<div>
+<h3>백테스트 (7,698건)</h3>
+<div class="grid" style="grid-template-columns:1fr 1fr">
+<div class="metric">
+<div class="metric-value negative">-100.0%</div>
+<div class="metric-label">최대 손실</div>
+</div>
+<div class="metric">
+<div class="metric-value positive">+2886.1%</div>
+<div class="metric-label">최대 수익</div>
+</div>
+</div>
+<div class="danger" style="margin-top:10px">
+<strong>최대 손실 -100%</strong> — 상장폐지/액면분할/합병 등 이벤트로 추정.<br>
+실전에서는 개별 종목 리스크 관리 필수.
+</div>
+</div>
+
+<div>
+<h3>페이퍼트레이딩 (18건)</h3>
+<div class="grid" style="grid-template-columns:1fr 1fr">
+<div class="metric">
+<div class="metric-value negative">-8.23%</div>
+<div class="metric-label">최대 손실</div>
+</div>
+<div class="metric">
+<div class="metric-value positive">+22.47%</div>
+<div class="metric-label">최대 수익</div>
+</div>
+</div>
+<div class="highlight" style="margin-top:10px">
+손절(-7%)이 제대로 작동 중. 최악 손실 -8.23%로 손절선 근처.<br>
+최고 수익 +22.47% — 익절 후 추가 상승 가능성 있음.
+</div>
+</div>
+</div>
+</div>
+
+<!-- 파라미터 민감도 -->
+<div class="card">
+<h2>🔧 파라미터 민감도 가이드</h2>
+
+<table>
+<thead>
+<tr><th>파라미터</th><th>현재값</th><th>완화 시</th><th>강화 시</th></tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>RSI 임계값</strong></td>
+<td class="num">≤ 30</td>
+<td>≤ 35~40: 거래수 ↑, 승률 ↓, PF ↓</td>
+<td>≤ 25~20: 거래수 ↓, 승률 ↑, PF ↑</td>
+</tr>
+<tr>
+<td><strong>저가 범위</strong></td>
+<td class="num">× 1.05</td>
+<td>× 1.10: 진입 여유 ↑, 손익비 ↓</td>
+<td>× 1.02: 고품질 신호, 거래수 급감</td>
+</tr>
+<tr>
+<td><strong>EMA 정배열</strong></td>
+<td class="num">20 > 50</td>
+<td>10 > 20: 단기 추세, 노이즈 ↑</td>
+<td>50 > 200: 장기 추세, 신호 ↓↓</td>
+</tr>
+<tr>
+<td><strong>익절</strong></td>
+<td class="num">+10%</td>
+<td>+15%: PF ↑, 승률 ↓</td>
+<td>+5%: 승률 ↑, PF ↓</td>
+</tr>
+<tr>
+<td><strong>손절</strong></td>
+<td class="num">-7%</td>
+<td>-10%: 연패 ↓, 단건 손실 ↑</td>
+<td>-5%: 승률 ↑, 작은 손실 누적</td>
+</tr>
+<tr>
+<td><strong>최대 포지션</strong></td>
+<td class="num">5개</td>
+<td>10개: 분산 ↑, 집중 ↓</td>
+<td>3개: 집중 ↑, 기회 비용 ↑</td>
+</tr>
+</tbody>
+</table>
+
+<div class="highlight">
+<strong>💡 권장:</strong> 현재 파라미터는 백테스트에서 이미 최적화된 값. 실전 적용 시 <strong>RSI 25~35</strong> 범위 내에서 시장 상황에 따라 탄력적으로 조정.
+</div>
+</div>
+
+<!-- 실전 적용 전략 -->
+<div class="card">
+<h2>🚀 실전 적용 전략</h2>
+
+<h3>1. 포지션 사이징</h3>
+<div class="highlight">
+<strong>고정 금액법:</strong> 종목당 ₩10,000,000 (총 ₩50,000,000 / 5개)<br>
+<strong>리스크 기반:</strong> 종목당 계좌의 2% 리스크 = -7% 손절 시 전체 -0.14% 손실
+</div>
+
+<h3>2. 실행 로드맵</h3>
+<table>
+<thead>
+<tr><th>단계</th><th>기간</th><th>목표</th><th>판단 기준</th></tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Phase 1</strong><br>페이퍼트레이딩</td>
+<td>1~2개월</td>
+<td>PF ≥ 2.0 유지<br>승률 ≥ 35%</td>
+<td>최소 50건 거래<br>최대 연패 ≤ 5회</td>
+</tr>
+<tr>
+<td><strong>Phase 2</strong><br>소금액 실전</td>
+<td>1개월</td>
+<td>백테스트와 편차 확인<br>슬리피지 측정</td>
+<td>실제 체결가 vs 신호가 편차 ≤ 1%<br>슬리피지 ≤ 0.5%</td>
+</tr>
+<tr>
+<td><strong>Phase 3</strong><br>정식 운용</td>
+<td>지속</td>
+<td>월간 PF ≥ 1.5<br>월간 수익률 ≥ +2%</td>
+<td>연속 3개월 미달 시 중단<br>파라미터 재검토</td>
+</tr>
+</tbody>
+</table>
+
+<h3>3. 중단 조건</h3>
+<div class="danger">
+<strong>즉시 중단:</strong> 연속 10건 손실 | 단일 종목 -30% 이상 | 슬리피지 > 2%<br>
+<strong>검토 필요:</strong> 20건 내 PF < 1.0 | 월간 수익률 < -5% | 승률 < 25%
+</div>
+</div>
+
+<!-- 결론 -->
+<div class="card">
+<h2>📝 결론</h2>
+
+<div class="highlight">
+<strong>S등급 전략 — 실전 적용 권장</strong><br><br>
+
+G-Strategy는 16개 평가 전략 중 유일하게 <strong>PF ≥ 2.0</strong>을 달성했다.<br>
+승률 37.4%는 낮지만, 평균 수익 +2.89%와 PF 2.14가 보여주듯 <strong>비대칭 수익구조</strong>가 확고하다.<br><br>
+
+핵심 성공 요인:<br>
+① <strong>과매소 진입</strong> (RSI ≤ 30) — 바닥권 매수<br>
+② <strong>저가 회귀</strong> (20일 최저가 근접) — 리스크 최소화<br>
+③ <strong>상승추세 필터</strong> (EMA 정배열) — 방향성 확보<br>
+④ <strong>비대칭 청산</strong> (+10% / -7%) — 이익은 크게, 손실은 작게<br><br>
+
+⚠️ <strong>주의사항:</strong> 최대 손실 -100%가 존재하므로 개별 종목 리스크 관리(분산 투자, 손절 준수)가 필수다.
+</div>
+</div>
+
+<div class="footer">
+<p>🎯 G-Strategy 상세 분석 리포트 | 데이터 기준: 2024-01-01 ~ 2026-06-15</p>
+<p style="font-size:0.7rem;margin-top:8px">본 리포트는 백테스트 결과를 바탕으로 작성되었으며, 과거 성과가 미래 수익을 보장하지 않습니다.</p>
+</div>
+
+</div>
+</body>
+</html>
