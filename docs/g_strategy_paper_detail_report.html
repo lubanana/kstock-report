@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎯 G-Strategy 페이퍼트레이딩 세부내역</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+:root{--bg:#0b1120;--card:#151e32;--accent:#38bdf8;--accent2:#22c55e;--accent3:#f59e0b;--danger:#ef4444;--text:#e2e8f0;--muted:#94a3b8;--border:#1e293b;}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;margin:0}
+.container{max-width:1100px;margin:0 auto;padding:20px}
+h1{font-size:1.7rem;margin-bottom:6px;color:#fff}
+h2{font-size:1.2rem;margin:28px 0 12px;color:var(--accent);border-bottom:2px solid var(--accent);padding-bottom:6px}
+h3{font-size:1rem;color:var(--accent3);margin:20px 0 8px}
+.subtitle{color:var(--muted);font-size:0.85rem;margin-bottom:20px}
+.card{background:var(--card);border-radius:12px;padding:20px;margin-bottom:16px;border:1px solid var(--border)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}
+.metric{text-align:center;padding:14px 8px;background:rgba(255,255,255,0.03);border-radius:10px}
+.metric-value{font-size:1.4rem;font-weight:700}
+.metric-label{font-size:0.7rem;color:var(--muted);margin-top:4px;text-transform:uppercase;letter-spacing:0.5px}
+.positive{color:#34d399} .negative{color:#f87171}
+.chart-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0}
+@media(max-width:768px){.chart-row{grid-template-columns:1fr}}
+.chart-box{background:var(--card);border-radius:12px;padding:16px;border:1px solid var(--border);height:280px;position:relative}
+.tag{display:inline-block;padding:3px 10px;border-radius:12px;font-size:0.72rem;font-weight:600;margin-right:3px}
+.tag.target{background:#1e3a8a;color:#60a5fa} .tag.stop{background:#7f1d1d;color:#f87171}
+.tag.rsi{background:#581c87;color:#c084fc} .tag.time{background:#1f2937;color:#9ca3af}
+table{width:100%;border-collapse:collapse;font-size:0.82rem;margin:10px 0}
+th,td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--border);white-space:nowrap}
+th{background:rgba(56,189,248,0.08);color:var(--accent);font-size:0.72rem;font-weight:600}
+.num{text-align:right;font-family:monospace}
+tr:hover{background:rgba(255,255,255,0.02)}
+.trade-win{border-left:3px solid #22c55e}
+.trade-loss{border-left:3px solid #ef4444}
+.summary-box{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:12px 0}
+@media(max-width:600px){.summary-box{grid-template-columns:repeat(2,1fr)}}
+.stat{padding:12px;background:rgba(255,255,255,0.03);border-radius:8px}
+.stat-val{font-size:1.3rem;font-weight:700}
+.stat-lbl{font-size:0.7rem;color:var(--muted);margin-top:4px}
+.footer{text-align:center;color:var(--muted);font-size:0.75rem;margin-top:30px;padding-top:16px;border-top:1px solid var(--border)}
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>🎯 G-Strategy 페이퍼트레이딩 세부내역</h1>
+<p class="subtitle">2026-01-02 ~ 2026-02-28 (38거래일) | 총 18건 거래 | 초기자본 ₩100,000,000</p>
+
+<!-- 요약 -->
+<div class="card">
+<div class="summary-box">
+<div class="stat">
+<div class="stat-val positive">₩105,712,325</div>
+<div class="stat-lbl">최종 자본 (초기 ₩100M)</div>
+</div>
+<div class="stat">
+<div class="stat-val positive">+5.71%</div>
+<div class="stat-lbl">총 수익률</div>
+</div>
+<div class="stat">
+<div class="stat-val positive">77.8%</div>
+<div class="stat-lbl">승률 (14승/4패)</div>
+</div>
+<div class="stat">
+<div class="stat-val positive">4.17</div>
+<div class="stat-lbl">Profit Factor</div>
+</div>
+</div>
+</div>
+
+<!-- 차트 1: 누적 수익률 -->
+<div class="chart-row">
+<div class="chart-box">
+<h3 style="margin:0 0 10px 0">📈 누적 수익률 추이</h3>
+<canvas id="cumChart"></canvas>
+</div>
+<div class="chart-box">
+<h3 style="margin:0 0 10px 0">📊 개별 거래 수익률</h3>
+<canvas id="barChart"></canvas>
+</div>
+</div>
+
+<!-- 차트 2: 청산 사유 + 분포 -->
+<div class="chart-row">
+<div class="chart-box">
+<h3 style="margin:0 0 10px 0">🚪 청산 사유 분포</h3>
+<canvas id="pieChart"></canvas>
+</div>
+<div class="chart-box">
+<h3 style="margin:0 0 10px 0">📉 수익률 구간 분포</h3>
+<canvas id="histChart"></canvas>
+</div>
+</div>
+
+<!-- 차트 3: 진입가 vs 수익률 -->
+<div class="card">
+<h3>💰 진입가 vs 수익률 산점도</h3>
+<div style="height:300px;position:relative">
+<canvas id="scatterChart"></canvas>
+</div>
+</div>
+
+<!-- 청산 사유별 요약 -->
+<div class="card">
+<h2>🚪 청산 사유별 상세</h2>
+<table>
+<thead>
+<tr><th>사유</th><th class="num">건수</th><th class="num">비중</th><th class="num">승률</th><th class="num">평균수익</th><th class="num">총수익</th></tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="tag" style="background:#a855f720;color:#a855f7">RSI≥60</span></td>
+<td class="num">8</td>
+<td class="num">44.4%</td>
+<td class="num positive">100%</td>
+<td class="num positive">+2.32%</td>
+<td class="num positive">+18.58%</td>
+</tr><tr>
+<td><span class="tag" style="background:#3b82f620;color:#3b82f6">익절(+10%)</span></td>
+<td class="num">5</td>
+<td class="num">27.8%</td>
+<td class="num positive">100%</td>
+<td class="num positive">+11.18%</td>
+<td class="num positive">+55.92%</td>
+</tr><tr>
+<td><span class="tag" style="background:#ef444420;color:#ef4444">손절(-7%)</span></td>
+<td class="num">4</td>
+<td class="num">22.2%</td>
+<td class="num negative">25%</td>
+<td class="num negative">-3.94%</td>
+<td class="num negative">-15.75%</td>
+</tr><tr>
+<td><span class="tag" style="background:#6b728020;color:#6b7280">10일경과</span></td>
+<td class="num">1</td>
+<td class="num">5.6%</td>
+<td class="num negative">0%</td>
+<td class="num negative">-1.58%</td>
+<td class="num negative">-1.58%</td>
+</tr></tbody>
+</table>
+</div>
+
+<!-- 전체 거래 테이블 -->
+<div class="card">
+<h2>📋 전체 거래 내역 (18건)</h2>
+<table>
+<thead>
+<tr><th>#</th><th>종목</th><th>진입일</th><th>청산일</th><th>홀딩</th><th>진입가</th><th>청산가</th><th class="num">수익률</th><th class="num">손익금</th><th>사유</th></tr>
+</thead>
+<tbody>
+<tr class="trade-win">
+<td class="num">1</td>
+<td><strong>이닉스</strong><br><span style="font-size:0.7rem;color:var(--muted)">452400</span></td>
+<td class="num">2026-02-02</td>
+<td class="num">2026-02-03</td>
+<td class="num">2일</td>
+<td class="num">₩10,660</td>
+<td class="num">₩10,970</td>
+<td class="num positive">+2.91%</td>
+<td class="num positive">₩290,780</td>
+<td><span class="tag rsi">RSI</span></td>
+</tr><tr class="trade-win">
+<td class="num">2</td>
+<td><strong>IBKS제23호스팩</strong><br><span style="font-size:0.7rem;color:var(--muted)">467930</span></td>
+<td class="num">2026-02-02</td>
+<td class="num">2026-02-11</td>
+<td class="num">10일</td>
+<td class="num">₩2,190</td>
+<td class="num">₩2,290</td>
+<td class="num positive">+4.57%</td>
+<td class="num positive">₩456,600</td>
+<td><span class="tag rsi">RSI</span></td>
+</tr><tr class="trade-loss">
+<td class="num">3</td>
+<td><strong>케이쓰리아이</strong><br><span style="font-size:0.7rem;color:var(--muted)">431190</span></td>
+<td class="num">2026-02-02</td>
+<td class="num">2026-02-19</td>
+<td class="num">18일</td>
+<td class="num">₩5,070</td>
+<td class="num">₩4,990</td>
+<td class="num negative">-1.58%</td>
+<td class="num negative">₩-157,760</td>
+<td><span class="tag time">시간</span></td>
+</tr><tr class="trade-win">
+<td class="num">4</td>
+<td><strong>프로티나</strong><br><span style="font-size:0.7rem;color:var(--muted)">468530</span></td>
+<td class="num">2026-02-02</td>
+<td class="num">2026-02-03</td>
+<td class="num">2일</td>
+<td class="num">₩75,300</td>
+<td class="num">₩81,500</td>
+<td class="num positive">+8.23%</td>
+<td class="num positive">₩818,400</td>
+<td><span class="tag target">익절</span></td>
+</tr><tr class="trade-loss">
+<td class="num">5</td>
+<td><strong>제이엔비</strong><br><span style="font-size:0.7rem;color:var(--muted)">452160</span></td>
+<td class="num">2026-02-02</td>
+<td class="num">2026-02-06</td>
+<td class="num">5일</td>
+<td class="num">₩6,650</td>
+<td class="num">₩6,410</td>
+<td class="num negative">-3.61%</td>
+<td class="num negative">₩-360,720</td>
+<td><span class="tag stop">손절</span></td>
+</tr><tr class="trade-win">
+<td class="num">6</td>
+<td><strong>중앙에너비스</strong><br><span style="font-size:0.7rem;color:var(--muted)">000440</span></td>
+<td class="num">2026-02-03</td>
+<td class="num">2026-02-10</td>
+<td class="num">8일</td>
+<td class="num">₩15,550</td>
+<td class="num">₩16,510</td>
+<td class="num positive">+6.17%</td>
+<td class="num positive">₩617,280</td>
+<td><span class="tag rsi">RSI</span></td>
+</tr><tr class="trade-win">
+<td class="num">7</td>
+<td><strong>한국수출포장</strong><br><span style="font-size:0.7rem;color:var(--muted)">002200</span></td>
+<td class="num">2026-02-03</td>
+<td class="num">2026-02-10</td>
+<td class="num">8일</td>
+<td class="num">₩3,150</td>
+<td class="num">₩3,215</td>
+<td class="num positive">+2.06%</td>
+<td class="num positive">₩206,310</td>
+<td><span class="tag rsi">RSI</span></td>
+</tr><tr class="trade-win">
+<td class="num">8</td>
+<td><strong>유니온</strong><br><span style="font-size:0.7rem;color:var(--muted)">000910</span></td>
+<td class="num">2026-02-09</td>
+<td class="num">2026-02-10</td>
+<td class="num">2일</td>
+<td class="num">₩4,445</td>
+<td class="num">₩4,465</td>
+<td class="num positive">+0.45%</td>
+<td class="num positive">₩44,980</td>
+<td><span class="tag rsi">RSI</span></td>
+</tr><tr class="trade-win">
+<td class="num">9</td>
+<td><strong>원익홀딩스</strong><br><span style="font-size:0.7rem;color:var(--muted)">030530</span></td>
+<td class="num">2026-02-10</td>
+<td class="num">2026-02-19</td>
+<td class="num">10일</td>
+<td class="num">₩36,250</td>
+<td class="num">₩36,500</td>
+<td class="num positive">+0.69%</td>
+<td class="num positive">₩68,750</td>
+<td><span class="tag stop">손절</span></td>
+</tr><tr class="trade-loss">
+<td class="num">10</td>
+<td><strong>아시아경제</strong><br><span style="font-size:0.7rem;color:var(--muted)">127710</span></td>
+<td class="num">2026-02-10</td>
+<td class="num">2026-02-19</td>
+<td class="num">10일</td>
+<td class="num">₩1,082</td>
+<td class="num">₩993</td>
+<td class="num negative">-8.23%</td>
+<td class="num negative">₩-822,538</td>
+<td><span class="tag stop">손절</span></td>
+</tr><tr class="trade-win">
+<td class="num">11</td>
+<td><strong>금호전기</strong><br><span style="font-size:0.7rem;color:var(--muted)">001210</span></td>
+<td class="num">2026-02-10</td>
+<td class="num">2026-02-23</td>
+<td class="num">14일</td>
+<td class="num">₩887</td>
+<td class="num">₩936</td>
+<td class="num positive">+5.52%</td>
+<td class="num positive">₩552,377</td>
+<td><span class="tag target">익절</span></td>
+</tr><tr class="trade-win">
+<td class="num">12</td>
+<td><strong>제이케이시냅스</strong><br><span style="font-size:0.7rem;color:var(--muted)">060230</span></td>
+<td class="num">2026-02-11</td>
+<td class="num">2026-02-12</td>
+<td class="num">2일</td>
+<td class="num">₩2,225</td>
+<td class="num">₩2,725</td>
+<td class="num positive">+22.47%</td>
+<td class="num positive">₩2,247,000</td>
+<td><span class="tag target">익절</span></td>
+</tr><tr class="trade-win">
+<td class="num">13</td>
+<td><strong>빛과전자</strong><br><span style="font-size:0.7rem;color:var(--muted)">069540</span></td>
+<td class="num">2026-02-12</td>
+<td class="num">2026-02-23</td>
+<td class="num">12일</td>
+<td class="num">₩1,092</td>
+<td class="num">₩1,200</td>
+<td class="num positive">+9.89%</td>
+<td class="num positive">₩988,956</td>
+<td><span class="tag target">익절</span></td>
+</tr><tr class="trade-win">
+<td class="num">14</td>
+<td><strong>교보18호스팩</strong><br><span style="font-size:0.7rem;color:var(--muted)">0041B0</span></td>
+<td class="num">2026-02-19</td>
+<td class="num">2026-02-25</td>
+<td class="num">7일</td>
+<td class="num">₩2,100</td>
+<td class="num">₩2,105</td>
+<td class="num positive">+0.24%</td>
+<td class="num positive">₩23,805</td>
+<td><span class="tag rsi">RSI</span></td>
+</tr><tr class="trade-loss">
+<td class="num">15</td>
+<td><strong>한일철강</strong><br><span style="font-size:0.7rem;color:var(--muted)">002220</span></td>
+<td class="num">2026-02-19</td>
+<td class="num">2026-02-23</td>
+<td class="num">5일</td>
+<td class="num">₩4,455</td>
+<td class="num">₩4,250</td>
+<td class="num negative">-4.60%</td>
+<td class="num negative">₩-460,020</td>
+<td><span class="tag stop">손절</span></td>
+</tr><tr class="trade-win">
+<td class="num">16</td>
+<td><strong>대상우</strong><br><span style="font-size:0.7rem;color:var(--muted)">001685</span></td>
+<td class="num">2026-02-19</td>
+<td class="num">2026-02-25</td>
+<td class="num">7일</td>
+<td class="num">₩17,520</td>
+<td class="num">₩17,740</td>
+<td class="num positive">+1.26%</td>
+<td class="num positive">₩125,400</td>
+<td><span class="tag rsi">RSI</span></td>
+</tr><tr class="trade-win">
+<td class="num">17</td>
+<td><strong>비엔케이제2호스팩</strong><br><span style="font-size:0.7rem;color:var(--muted)">473370</span></td>
+<td class="num">2026-02-23</td>
+<td class="num">2026-02-24</td>
+<td class="num">2일</td>
+<td class="num">₩2,690</td>
+<td class="num">₩2,715</td>
+<td class="num positive">+0.93%</td>
+<td class="num positive">₩92,925</td>
+<td><span class="tag rsi">RSI</span></td>
+</tr><tr class="trade-win">
+<td class="num">18</td>
+<td><strong>씨메스</strong><br><span style="font-size:0.7rem;color:var(--muted)">475400</span></td>
+<td class="num">2026-02-23</td>
+<td class="num">2026-02-25</td>
+<td class="num">3일</td>
+<td class="num">₩35,200</td>
+<td class="num">₩38,650</td>
+<td class="num positive">+9.80%</td>
+<td class="num positive">₩979,800</td>
+<td><span class="tag target">익절</span></td>
+</tr></tbody>
+</table>
+</div>
+
+<!-- 승/패 세부 -->
+<div class="card">
+<h2>🏆 승/패 거래 분리</h2>
+
+<h3>✅ 승리 거래 (14건)</h3>
+<table>
+<thead>
+<tr><th>종목</th><th>진입→청산</th><th class="num">수익률</th><th>사유</th></tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>제이케이시냅스</strong></td>
+<td class="num">2026-02-11 → 2026-02-12</td>
+<td class="num positive">+22.47%</td>
+<td><span class="tag target">익절</span></td>
+</tr><tr>
+<td><strong>빛과전자</strong></td>
+<td class="num">2026-02-12 → 2026-02-23</td>
+<td class="num positive">+9.89%</td>
+<td><span class="tag target">익절</span></td>
+</tr><tr>
+<td><strong>씨메스</strong></td>
+<td class="num">2026-02-23 → 2026-02-25</td>
+<td class="num positive">+9.80%</td>
+<td><span class="tag target">익절</span></td>
+</tr><tr>
+<td><strong>프로티나</strong></td>
+<td class="num">2026-02-02 → 2026-02-03</td>
+<td class="num positive">+8.23%</td>
+<td><span class="tag target">익절</span></td>
+</tr><tr>
+<td><strong>중앙에너비스</strong></td>
+<td class="num">2026-02-03 → 2026-02-10</td>
+<td class="num positive">+6.17%</td>
+<td><span class="tag rsi">RSI</span></td>
+</tr><tr>
+<td><strong>금호전기</strong></td>
+<td class="num">2026-02-10 → 2026-02-23</td>
+<td class="num positive">+5.52%</td>
+<td><span class="tag target">익절</span></td>
+</tr><tr>
+<td><strong>IBKS제23호스팩</strong></td>
+<td class="num">2026-02-02 → 2026-02-11</td>
+<td class="num positive">+4.57%</td>
+<td><span class="tag rsi">RSI</span></td>
+</tr><tr>
+<td><strong>이닉스</strong></td>
+<td class="num">2026-02-02 → 2026-02-03</td>
+<td class="num positive">+2.91%</td>
+<td><span class="tag rsi">RSI</span></td>
+</tr><tr>
+<td><strong>한국수출포장</strong></td>
+<td class="num">2026-02-03 → 2026-02-10</td>
+<td class="num positive">+2.06%</td>
+<td><span class="tag rsi">RSI</span></td>
+</tr><tr>
+<td><strong>대상우</strong></td>
+<td class="num">2026-02-19 → 2026-02-25</td>
+<td class="num positive">+1.26%</td>
+<td><span class="tag rsi">RSI</span></td>
+</tr><tr>
+<td><strong>비엔케이제2호스팩</strong></td>
+<td class="num">2026-02-23 → 2026-02-24</td>
+<td class="num positive">+0.93%</td>
+<td><span class="tag rsi">RSI</span></td>
+</tr><tr>
+<td><strong>원익홀딩스</strong></td>
+<td class="num">2026-02-10 → 2026-02-19</td>
+<td class="num positive">+0.69%</td>
+<td><span class="tag stop">손절</span></td>
+</tr><tr>
+<td><strong>유니온</strong></td>
+<td class="num">2026-02-09 → 2026-02-10</td>
+<td class="num positive">+0.45%</td>
+<td><span class="tag rsi">RSI</span></td>
+</tr><tr>
+<td><strong>교보18호스팩</strong></td>
+<td class="num">2026-02-19 → 2026-02-25</td>
+<td class="num positive">+0.24%</td>
+<td><span class="tag rsi">RSI</span></td>
+</tr></tbody>
+</table>
+
+<h3>❌ 손실 거래 (4건)</h3>
+<table>
+<thead>
+<tr><th>종목</th><th>진입→청산</th><th class="num">수익률</th><th>사유</th></tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>아시아경제</strong></td>
+<td class="num">2026-02-10 → 2026-02-19</td>
+<td class="num negative">-8.23%</td>
+<td><span class="tag stop">손절</span></td>
+</tr><tr>
+<td><strong>한일철강</strong></td>
+<td class="num">2026-02-19 → 2026-02-23</td>
+<td class="num negative">-4.60%</td>
+<td><span class="tag stop">손절</span></td>
+</tr><tr>
+<td><strong>제이엔비</strong></td>
+<td class="num">2026-02-02 → 2026-02-06</td>
+<td class="num negative">-3.61%</td>
+<td><span class="tag stop">손절</span></td>
+</tr><tr>
+<td><strong>케이쓰리아이</strong></td>
+<td class="num">2026-02-02 → 2026-02-19</td>
+<td class="num negative">-1.58%</td>
+<td><span class="tag time">시간</span></td>
+</tr></tbody>
+</table>
+</div>
+
+<!-- Chart.js 스크립트 -->
+<script>
+// 누적 수익률
+const ctx1 = document.getElementById('cumChart').getContext('2d');
+new Chart(ctx1, {
+  type: 'line',
+  data: {
+    labels: ["2026-02-02", "2026-02-02", "2026-02-02", "2026-02-02", "2026-02-02", "2026-02-03", "2026-02-03", "2026-02-09", "2026-02-10", "2026-02-10", "2026-02-10", "2026-02-11", "2026-02-12", "2026-02-19", "2026-02-19", "2026-02-19", "2026-02-23", "2026-02-23"],
+    datasets: [{
+      label: '누적 수익률 (%)',
+      data: [2.91, 7.47, 5.9, 14.13, 10.52, 16.69, 18.76, 19.21, 19.9, 11.67, 17.2, 39.67, 49.56, 49.8, 45.2, 46.45, 47.38, 57.18],
+      borderColor: '#38bdf8',
+      backgroundColor: 'rgba(56,189,248,0.1)',
+      fill: true,
+      tension: 0.3,
+      pointRadius: 4
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8' } },
+      x: { grid: { display: false }, ticks: { color: '#94a3b8', maxRotation: 45 } }
+    }
+  }
+});
+
+// 개별 거래 막대
+const ctx2 = document.getElementById('barChart').getContext('2d');
+const barColors = [2.908067542213884, 4.5662100456621, -1.5779092702169626, 8.233731739707835, -3.6090225563909777, 6.173633440514469, 2.0634920634920633, 0.44994375703037126, 0.6896551724137931, -8.22550831792976, 5.5242390078917705, 22.47191011235955, 9.89010989010989, 0.2380952380952381, -4.601571268237935, 1.2557077625570776, 0.929368029739777, 9.801136363636363].map(v => v > 0 ? '#22c55e' : '#ef4444');
+new Chart(ctx2, {
+  type: 'bar',
+  data: {
+    labels: ["2026-02-02", "2026-02-02", "2026-02-02", "2026-02-02", "2026-02-02", "2026-02-03", "2026-02-03", "2026-02-09", "2026-02-10", "2026-02-10", "2026-02-10", "2026-02-11", "2026-02-12", "2026-02-19", "2026-02-19", "2026-02-19", "2026-02-23", "2026-02-23"],
+    datasets: [{
+      label: '수익률 (%)',
+      data: [2.91, 4.57, -1.58, 8.23, -3.61, 6.17, 2.06, 0.45, 0.69, -8.23, 5.52, 22.47, 9.89, 0.24, -4.6, 1.26, 0.93, 9.8],
+      backgroundColor: barColors,
+      borderRadius: 4
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8' } },
+      x: { grid: { display: false }, ticks: { color: '#94a3b8', maxRotation: 45 } }
+    }
+  }
+});
+
+// 청산 사유 파이
+const ctx3 = document.getElementById('pieChart').getContext('2d');
+new Chart(ctx3, {
+  type: 'doughnut',
+  data: {
+    labels: ["RSI\u226560", "\uc775\uc808(+10%)", "\uc190\uc808(-7%)", "10\uc77c\uacbd\uacfc"],
+    datasets: [{
+      data: [8, 5, 4, 1],
+      backgroundColor: ["#a855f7", "#3b82f6", "#ef4444", "#6b7280"],
+      borderWidth: 0
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'right', labels: { color: '#e2e8f0' } }
+    }
+  }
+});
+
+// 수익률 구간 히스토그램
+const ctx4 = document.getElementById('histChart').getContext('2d');
+new Chart(ctx4, {
+  type: 'bar',
+  data: {
+    labels: ["<-7%", "-7~-3%", "-3~0%", "0~3%", "3~7%", "7~10%", ">10%"],
+    datasets: [{
+      label: '거래 건수',
+      data: [1, 2, 1, 7, 3, 3, 1],
+      backgroundColor: ['#ef4444','#f87171','#fca5a5','#6b7280','#86efac','#22c55e','#15803d'],
+      borderRadius: 4
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8' } },
+      x: { grid: { display: false }, ticks: { color: '#94a3b8' } }
+    }
+  }
+});
+
+// 산점도
+const ctx5 = document.getElementById('scatterChart').getContext('2d');
+const scatterData = [{"x": 10660.0, "y": 2.91, "name": "\uc774\ub2c9\uc2a4"}, {"x": 75300.0, "y": 8.23, "name": "\ud504\ub85c\ud2f0\ub098"}, {"x": 6650.0, "y": -3.61, "name": "\uc81c\uc774\uc5d4\ube44"}, {"x": 15550.0, "y": 6.17, "name": "\uc911\uc559\uc5d0\ub108\ube44\uc2a4"}, {"x": 3150.0, "y": 2.06, "name": "\ud55c\uad6d\uc218\ucd9c\ud3ec\uc7a5"}, {"x": 4445.0, "y": 0.45, "name": "\uc720\ub2c8\uc628"}, {"x": 2190.0, "y": 4.57, "name": "IBKS\uc81c23\ud638\uc2a4\ud329"}, {"x": 2225.0, "y": 22.47, "name": "\uc81c\uc774\ucf00\uc774\uc2dc\ub0c5\uc2a4"}, {"x": 5070.0, "y": -1.58, "name": "\ucf00\uc774\uc4f0\ub9ac\uc544\uc774"}, {"x": 36250.0, "y": 0.69, "name": "\uc6d0\uc775\ud640\ub529\uc2a4"}, {"x": 1082.0, "y": -8.23, "name": "\uc544\uc2dc\uc544\uacbd\uc81c"}, {"x": 887.0, "y": 5.52, "name": "\uae08\ud638\uc804\uae30"}, {"x": 1092.0, "y": 9.89, "name": "\ube5b\uacfc\uc804\uc790"}, {"x": 4455.0, "y": -4.6, "name": "\ud55c\uc77c\ucca0\uac15"}, {"x": 2690.0, "y": 0.93, "name": "\ube44\uc5d4\ucf00\uc774\uc81c2\ud638\uc2a4\ud329"}, {"x": 17520.0, "y": 1.26, "name": "\ub300\uc0c1\uc6b0"}, {"x": 2100.0, "y": 0.24, "name": "\uad50\ubcf418\ud638\uc2a4\ud329"}, {"x": 35200.0, "y": 9.8, "name": "\uc528\uba54\uc2a4"}];
+new Chart(ctx5, {
+  type: 'scatter',
+  data: {
+    datasets: [{
+      label: '거래',
+      data: scatterData,
+      backgroundColor: scatterData.map(d => d.y > 0 ? '#22c55e' : '#ef4444'),
+      pointRadius: 6
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      tooltip: {
+        callbacks: {
+          label: (ctx) => `${ctx.raw.name}: ₩${ctx.raw.x.toLocaleString()} → ${ctx.raw.y}%`
+        }
+      },
+      legend: { display: false }
+    },
+    scales: {
+      x: { title: { display: true, text: '진입가', color: '#94a3b8' }, grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8' } },
+      y: { title: { display: true, text: '수익률 (%)', color: '#94a3b8' }, grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8' } }
+    }
+  }
+});
+</script>
+
+<div class="footer">
+<p>🎯 G-Strategy 페이퍼트레이딩 세부내역 | 생성: 2026-06-17 08:42</p>
+</div>
+
+</div>
+</body>
+</html>
